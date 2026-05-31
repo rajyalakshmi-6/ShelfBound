@@ -11,7 +11,7 @@ A full-stack e-commerce bookstore platform built using Java Servlets, JSP, JDBC,
 
 ## 📖 Project Overview
 
-ShelfBound is a full-stack online bookstore web application designed to provide a real-world e-commerce experience for both customers and administrators.
+ShelfBound is a dynamic and responsive online bookstore web application that simulates a real-world e-commerce platform. It supports both **customer-side operations** and a powerful **admin dashboard** for complete book and order management.
 
 The platform allows users to browse books, manage wishlists, add products to cart, place orders, track order status, and communicate with administrators through a dedicated contact system.
 
@@ -21,7 +21,7 @@ The project follows the MVC (Model–View–Controller) architecture and DAO Des
 
 ---
 
-## 🚀 Features
+## 🚀 Key Features
 
 ### 👤 Customer Features
 
@@ -51,15 +51,7 @@ The project follows the MVC (Model–View–Controller) architecture and DAO Des
 * Session management is implemented using Java Servlets and HttpSession.
 * Unauthorized users attempting to access protected pages are automatically redirected to the Login page.
 
-Protected Features Include:
 
-* Wishlist
-* Cart Operations
-* Orders Page
-* Checkout Process
-* User-Specific Actions
-
----
 
 ### 🛒 Cart & Order Management
 
@@ -252,33 +244,12 @@ Key Database Modules:
 
 ## 🛠️ Technology Stack
 
-### Backend
-
-* Java
-* JSP
-* Servlets
-* JDBC
-
-### Frontend
-
-* HTML5
-* CSS3
-* JavaScript(basic)
-
-### Database
-
-* MySQL
-
-### Server
-
-* Apache Tomcat
-
-### Development Tools
-
-* Eclipse IDE
-* MySQL Workbench
-* Git
-* GitHub
+- Backend:  Java, JSP, Servlets (Jakarta EE)
+- Database: MySQL
+- Server: Apache Tomcat
+- Frontend: HTML, CSS, JavaScript(basic)
+- Architecture: MVC + DAO Pattern
+- Database Connectivity: JDBC
 
 ---
 
@@ -296,51 +267,66 @@ All application architecture, database design, business logic implementation, in
 
 ---
 
-## 📸 Application Screenshots
+## 📸 Project Screenshots
 
-### Home Page
+### 🏠 Home Page
+![Home Page](screenshots/home-page-1.png)
+![Home Page View](screenshots/home-page-2.png)
 
-(Add Screenshot Here)
+---
 
-### Books Page
+## 👤 Customer Module
 
-(Add Screenshot Here)
+### 🔐 Customer Login Page
+![Customer Login](screenshots/customer_login.png)
 
-### Book Details Page
+### 📝 Customer Register Page
+![Customer Register](screenshots/customer_register.png)
 
-(Add Screenshot Here)
+### 📚 Books Page
+![Books Page](screenshots/books-page.png)
 
-### Cart Page
+### 📖 Book Details Page
+![Book Details](screenshots/book-details-page.png)
 
-(Add Screenshot Here)
+### ❤️ Wishlist Page
+![Wishlist Page](screenshots/wishlist-page.png)
 
-### Wishlist Page
+### 🛒 Cart Page
+![Cart Page](screenshots/cart-page.png)
 
-(Add Screenshot Here)
+### 💳 Checkout Page
+![Checkout Page](screenshots/checkout-page.png)
 
-### Checkout Page
+### 📦 Orders Page
+![Orders Page](screenshots/orders-page.png)
 
-(Add Screenshot Here)
+### 📩 Contact Page
+![Contact Page](screenshots/contact_us-page.png)
 
-### Orders Page
+---
 
-(Add Screenshot Here)
+## 🛠️ Admin Module
 
-### Admin Dashboard
+### 🔐 Admin Login Page
+![Admin Login](screenshots/admin_login.png)
 
-(Add Screenshot Here)
+### 📊 Admin Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
 
-### Manage Books
+### 📚 Manage Books
+![Manage Books](screenshots/manage-books.png)
 
-(Add Screenshot Here)
+### 📦 Manage Orders
+![Manage Orders](screenshots/manage-orders.png)
 
-### Manage Orders
+### 🧾 Manage Messages
+![Manage Messages](screenshots/manage-messages.png)
 
-(Add Screenshot Here)
+---
 
-### Customer Messages
-
-(Add Screenshot Here)
+## ℹ️ About Page
+![About Page](screenshots/about-page.png)
 
 ---
 
@@ -358,7 +344,11 @@ All application architecture, database design, business logic implementation, in
 
 ---
 
-## 👩‍💻 Developer
+## 👩‍💻 Developer  Info 
+
+- Project Type: Individual Project
+- Domain: Full Stack Java Web Development
+- Focus: E-commerce + Backend Architecture
 
 **Rajyalakshmi Devarala**
 
