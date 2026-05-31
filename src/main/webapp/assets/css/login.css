@@ -1,0 +1,288 @@
+/* ================= GLOBAL ================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI', sans-serif;
+    background:#f4f7fb;
+    min-height:100vh;
+}
+
+/* ================= MAIN CONTAINER ================= */
+
+.login-container{
+    display:flex;
+    min-height:100vh;
+}
+
+/* ================= LEFT SECTION ================= */
+
+.login-left{
+    flex:1;
+    position:relative;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(30,58,138,0.95),
+        rgba(37,99,235,0.92)
+    ),
+
+    url('../images/library-bg.jpg');
+
+    background-size:cover;
+    background-position:center;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:60px;
+    overflow:hidden;
+}
+
+/* OPTIONAL OVERLAY */
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.12);
+}
+
+/* ================= BRAND CONTENT ================= */
+
+.brand-content{
+    position:relative;
+    z-index:2;
+    max-width:520px;
+    color:white;
+}
+
+.brand-content h1{
+    font-size:64px;
+    margin-bottom:22px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.shelf{
+    color:#ff7a00;
+}
+
+.bound{
+    color:white;
+}
+
+.tagline{
+    font-size:20px;
+    line-height:1.9;
+    opacity:0.95;
+}
+
+/* ================= RIGHT SECTION ================= */
+
+.login-right{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:white;
+    padding:40px;
+}
+
+/* ================= LOGIN CARD ================= */
+
+.login-card{
+    width:100%;
+    max-width:440px;
+
+    background:white;
+
+    padding:45px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 40px rgba(0,0,0,0.08);
+}
+
+.login-card h2{
+    font-size:36px;
+    color:#0f172a;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#64748b;
+    font-size:15px;
+    margin-bottom:28px;
+    line-height:1.6;
+}
+
+/* ================= ERROR MESSAGE ================= */
+
+.error-message{
+    background:#fef2f2;
+    color:#dc2626;
+
+    border-left:5px solid #dc2626;
+
+    padding:14px 16px;
+
+    border-radius:10px;
+
+    margin-bottom:22px;
+
+    font-size:14px;
+    font-weight:500;
+
+    text-align:center;
+}
+
+/* ================= FORM ================= */
+
+.form-group{
+    margin-bottom:22px;
+}
+
+.form-group label{
+    display:block;
+
+    margin-bottom:8px;
+
+    color:#334155;
+
+    font-size:15px;
+    font-weight:600;
+}
+
+.form-group input{
+    width:100%;
+
+    padding:15px;
+
+    border:1px solid #dbe3ec;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    outline:none;
+
+    transition:0.3s;
+}
+
+.form-group input:focus{
+    border-color:#2563eb;
+
+    box-shadow:
+    0 0 0 4px rgba(37,99,235,0.12);
+}
+
+/* ================= BUTTON ================= */
+
+.login-btn{
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+    border-radius:12px;
+
+    background:#ff7a00;
+
+    color:white;
+
+    font-size:16px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+    margin-top:10px;
+}
+
+.login-btn:hover{
+    background:#e96d00;
+
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 10px 20px rgba(255,122,0,0.25);
+}
+
+/* ================= EXTRA LINKS ================= */
+
+.extra-links{
+    margin-top:24px;
+
+    text-align:center;
+
+    color:#64748b;
+
+    font-size:15px;
+}
+
+.extra-links a{
+    color:#2563eb;
+
+    text-decoration:none;
+
+    font-weight:600;
+}
+
+.extra-links a:hover{
+    text-decoration:underline;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:950px){
+
+    .login-container{
+        flex-direction:column;
+    }
+
+    .login-left{
+        min-height:38vh;
+        text-align:center;
+        padding:40px 25px;
+    }
+
+    .brand-content h1{
+        font-size:46px;
+    }
+
+    .tagline{
+        font-size:16px;
+    }
+
+    .login-right{
+        padding:25px;
+    }
+
+    .login-card{
+        padding:35px 28px;
+    }
+}
+
+@media(max-width:500px){
+
+    .brand-content h1{
+        font-size:38px;
+    }
+
+    .login-card h2{
+        font-size:28px;
+    }
+
+    .tagline{
+        font-size:15px;
+        line-height:1.7;
+    }
+}

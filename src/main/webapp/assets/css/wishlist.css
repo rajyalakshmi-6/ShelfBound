@@ -1,0 +1,293 @@
+/* ================= CSS VARIABLES & RESET ================= */
+:root {
+    --primary-blue: #1e3a8a;
+    --accent-orange: #ff7a00;
+    --bg-main: #fbfbfb;
+    --bg-card: #ffffff;
+    --text-primary: #1e293b;
+    --text-muted: #64748b;
+    --border-light: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.05);
+    --shadow-hover: 0 10px 20px rgba(15, 23, 42, 0.08);
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+   background:
+    linear-gradient(
+    135deg,
+    #dff6ff,
+    #a8d8ff) !important;
+    min-height: 100vh;
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ================= NAVBAR (exact match to home.css) ================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+}
+
+.logo-container {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    text-decoration: none;
+    transition: var(--transition);
+    max-height: 44px;
+    overflow: hidden;
+}
+
+.logo-container:hover { opacity: 0.95; }
+
+.logo-img {
+    height: 36px;
+    width: auto;
+    max-width: 36px;
+    object-fit: contain;
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.logo-shelf { color: #ff7a00; }
+.logo-bound { color: #1e3a8a; }
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 550;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    color: var(--primary-blue);
+    background-color: rgba(30, 58, 138, 0.05);
+}
+
+.welcome-user {
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: rgba(30, 58, 138, 0.06);
+    border-radius: 8px;
+}
+
+/* ================= PAGE WRAPPER ================= */
+.page-wrapper {
+    max-width: 1300px;
+    margin: 40px auto;
+    padding: 0 40px 60px;
+}
+
+.page-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--primary-blue);
+    letter-spacing: -0.5px;
+    margin: 0 0 28px;
+}
+
+/* ================= EMPTY STATE ================= */
+.empty-wishlist {
+    text-align: center;
+    padding: 80px 40px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.empty-wishlist p {
+    font-size: 18px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0 0 20px;
+}
+
+.empty-wishlist a {
+    display: inline-block;
+    padding: 11px 26px;
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.empty-wishlist a:hover { background-color: #1e40af; }
+
+/* ================= BOOK GRID ================= */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 24px;
+}
+
+/* ================= BOOK CARD ================= */
+.book-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+.book-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-hover);
+    border-color: #cbd5e1;
+}
+
+.book-card img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: #f1f5f9;
+}
+
+.book-card h3 {
+    font-size: 14.5px;
+    font-weight: 600;
+    margin: 12px 0 4px;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.book-card .author {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin: 2px 0 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.book-card .price {
+    color: var(--primary-blue);
+    font-weight: 700;
+    font-size: 15px;
+    margin: 0 0 14px;
+}
+
+/* ================= CARD ACTIONS ================= */
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
+}
+
+/* Add to Cart button */
+.btn-cart {
+    width: 100%;
+    padding: 9px 0;
+    background-color: var(--primary-blue);
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-cart:hover {
+    background-color: #1e40af;
+    transform: translateY(-1px);
+}
+
+/* Remove from Wishlist button */
+.btn-remove {
+    width: 100%;
+    padding: 9px 0;
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-remove:hover {
+    background-color: #fecaca;
+    color: #991b1b;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+
+    .navbar {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .nav-links {
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .page-wrapper {
+        padding: 0 20px 40px;
+    }
+
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+
+    .book-card img {
+        height: 210px;
+    }
+   
+}

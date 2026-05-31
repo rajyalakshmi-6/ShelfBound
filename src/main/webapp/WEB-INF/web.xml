@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+         xsi:schemaLocation="
+         https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+
+         version="6.0">
+
+    <!-- ========================= -->
+    <!-- PROJECT NAME -->
+    <!-- ========================= -->
+
+    <display-name>ShelfBound Bookstore</display-name>
+
+
+    <!-- ========================= -->
+    <!-- REGISTER SERVLET -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>RegisterServlet</servlet-name>
+
+        <servlet-class>
+            com.shelfbound.servlet.RegisterServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RegisterServlet</servlet-name>
+
+        <url-pattern>/register</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ========================= -->
+    <!-- LOGIN SERVLET -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+
+        <servlet-class>
+            com.shelfbound.servlet.LoginServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ========================= -->
+    <!-- HOME SERVLET -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+
+        <servlet-class>
+            com.shelfbound.servlet.HomeServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ========================= -->
+    <!-- BOOKS SERVLET -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>BooksServlet</servlet-name>
+
+        <servlet-class>
+            com.shelfbound.servlet.BooksServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BooksServlet</servlet-name>
+
+        <url-pattern>/books</url-pattern>
+    </servlet-mapping>
+    
+    
+
+
+    <!-- ========================= -->
+    <!-- BOOK DETAILS SERVLET -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>BookDetailsServlet</servlet-name>
+
+        <servlet-class>
+            com.shelfbound.servlet.BookDetailsServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>BookDetailsServlet</servlet-name>
+
+        <url-pattern>/book</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ========================= -->
+    <!-- CART SERVLET -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+
+        <servlet-class>
+            com.shelfbound.servlet.CartServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ========================= -->
+    <!-- REMOVE CART SERVLET -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>RemoveCartServlet</servlet-name>
+
+        <servlet-class>
+            com.shelfbound.servlet.RemoveCartServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>RemoveCartServlet</servlet-name>
+
+        <url-pattern>/removeCart</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ========================= -->
+    <!-- CHECKOUT SERVLET -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>CheckoutServlet</servlet-name>
+
+        <servlet-class>
+            com.shelfbound.servlet.CheckoutServlet
+        </servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CheckoutServlet</servlet-name>
+
+        <url-pattern>/checkout</url-pattern>
+    </servlet-mapping>
+
+<!-- ========================= -->
+<!-- ORDERS SERVLET -->
+<!-- ========================= -->
+
+<servlet>
+    <servlet-name>OrdersServlet</servlet-name>
+
+    <servlet-class>
+        com.shelfbound.servlet.OrdersServlet
+    </servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>OrdersServlet</servlet-name>
+
+    <url-pattern>/orders</url-pattern>
+</servlet-mapping>
+
+
+<!-- ========================= -->
+<!-- ORDER DETAILS SERVLET -->
+<!-- ========================= -->
+
+<servlet>
+    <servlet-name>OrderDetailsServlet</servlet-name>
+    <servlet-class>
+        com.shelfbound.servlet.OrderDetailsServlet
+    </servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>OrderDetailsServlet</servlet-name>
+    <url-pattern>/orderDetails</url-pattern>
+</servlet-mapping>
+
+<!-- ADMIN SERVLET -->
+<!-- ========================= -->
+
+<!-- ADMIN LOGIN SERVLET -->
+
+<!-- ========================= -->
+
+<servlet>
+	<servlet-name>AdminLoginServlet</servlet-name>
+	<servlet-class>com.shelfbound.servlet.admin.AdminLoginServlet</servlet-class>
+
+
+</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AdminLoginServlet</servlet-name>
+		<url-pattern>/adminLogin</url-pattern>
+	</servlet-mapping>
+
+
+
+<!-- ADMIN DASHBOARD -->
+
+<servlet>
+	<servlet-name>AdminDashboardServlet</servlet-name>
+
+	<servlet-class>com.shelfbound.servlet.admin.AdminDashboardServlet</servlet-class>
+</servlet>
+
+	<servlet-mapping>
+		<servlet-name>AdminDashboardServlet</servlet-name>
+
+		<url-pattern>
+        /adminDashboard
+    </url-pattern>
+	</servlet-mapping>
+
+<!-- ========================= -->
+<!-- ADMIN BOOK SERVLET -->
+<!-- ========================= -->
+
+<!-- ADMIN BOOK -->
+<servlet>
+    <servlet-name>AdminBookServlet</servlet-name>
+
+    <servlet-class>
+        com.shelfbound.servlet.admin.AdminBookServlet
+    </servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AdminBookServlet</servlet-name>
+
+    <url-pattern>/adminBook</url-pattern>
+</servlet-mapping>
+
+
+
+<!-- ADMIN ORDER -->
+
+<servlet>
+    <servlet-name>AdminOrderServlet</servlet-name>
+    <servlet-class>com.shelfbound.servlet.admin.AdminOrderServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AdminOrderServlet</servlet-name>
+    <url-pattern>/adminOrder</url-pattern>
+</servlet-mapping>	
+
+
+<!-- ADMIN MESSAGE -->
+
+<servlet>
+    <servlet-name>AdminMessageServlet</servlet-name>
+    <servlet-class>
+        com.shelfbound.servlet.admin.AdminMessageServlet
+    </servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AdminMessageServlet</servlet-name>
+    <url-pattern>/adminMessage</url-pattern>
+</servlet-mapping>
+
+
+
+<servlet>
+    <servlet-name>ContactMessageServlet</servlet-name>
+
+    <servlet-class>
+        com.shelfbound.servlet.ContactMessageServlet
+    </servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ContactMessageServlet</servlet-name>
+
+    <url-pattern>/contact</url-pattern>
+</servlet-mapping>
+
+<!-- ========================= -->
+<!-- ADMIN /user LOGOUT -->
+<!-- ========================= -->
+
+<servlet>
+    <servlet-name>LogoutServlet</servlet-name>  <!-- we can give any name servlet class must br correct -->
+    <servlet-class>com.shelfbound.servlet.admin.LogoutServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+</servlet-mapping>
+
+
+<servlet>
+    <servlet-name>AboutServlet</servlet-name>
+    <servlet-class>com.shelfbound.servlet.AboutServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>AboutServlet</servlet-name>
+    <url-pattern>/about</url-pattern>
+</servlet-mapping>
+
+    <!-- ========================= -->
+    <!-- DEFAULT WELCOME PAGE -->
+    <!-- ========================= -->
+
+    <welcome-file-list>
+
+        <!-- OPEN HOME PAGE FIRST -->
+        <welcome-file>home</welcome-file>
+
+    </welcome-file-list>
+
+</web-app>

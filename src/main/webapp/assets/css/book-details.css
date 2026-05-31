@@ -1,0 +1,283 @@
+/* ================= CSS VARIABLES ================= */
+:root {
+    --primary-blue: #1e3a8a;
+    --accent-orange: #ff7a00;
+    --bg-card: #ffffff;
+    --text-primary: #1e293b;
+    --text-muted: #64748b;
+    --border-light: #e2e8f0;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ================= GLOBAL ================= */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+
+    /* YOUR ORIGINAL BACKGROUND — UNCHANGED */
+    background: linear-gradient(135deg, #dff6ff, #a8d8ff, #e3f2fd);
+
+    min-height: 100vh;
+    color: #222;
+}
+
+/* ================= NAVBAR (matches home.css exactly) ================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--shadow-sm);
+}
+
+.logo-container {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    text-decoration: none;
+    transition: var(--transition);
+    max-height: 44px;
+    overflow: hidden;
+}
+
+.logo-container:hover {
+    opacity: 0.95;
+}
+
+.logo-img {
+    height: 36px;
+    width: auto;
+    max-width: 36px;
+    object-fit: contain;
+    display: inline-block;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.logo-shelf { color: #ff7a00; }
+.logo-bound { color: #1e3a8a; }
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 550;
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    color: var(--primary-blue);
+    background-color: rgba(30, 58, 138, 0.05);
+}
+
+.welcome-user {
+    color: var(--primary-blue);
+    font-weight: 600;
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: rgba(30, 58, 138, 0.06);
+    border-radius: 8px;
+}
+
+/* ================= MAIN CONTAINER ================= */
+.container {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    padding: 40px;
+    max-width: 1200px;
+    margin: 50px auto;
+    display: flex;
+    gap: 50px;
+}
+
+/* ================= IMAGE ================= */
+.book-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.book-image img {
+    width: 100%;
+    max-width: 380px;
+    height: 520px;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    transition: 0.3s;
+}
+
+.book-image img:hover {
+    transform: scale(1.02);
+}
+
+/* ================= DETAILS ================= */
+.book-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.book-title {
+    font-size: 36px;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 15px;
+}
+
+.author {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.rating {
+    font-size: 18px;
+    color: #f59e0b;
+    margin-bottom: 20px;
+}
+
+.price {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ff7a00;
+    margin-bottom: 20px;
+}
+
+.description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #444;
+    margin-bottom: 25px;
+}
+
+.stock {
+    font-size: 16px;
+    font-weight: 600;
+    color: green;
+    margin-bottom: 25px;
+}
+
+/* ================= QUANTITY ================= */
+.quantity-box {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.quantity-box label {
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.quantity-box input {
+    width: 80px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+}
+
+/* ================= BUTTON ================= */
+.btn {
+    width: 220px;
+    padding: 14px;
+    background: #1e3a8a;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #14285c;
+    transform: translateY(-2px);
+}
+
+/* ================= BACK LINK ================= */
+.back {
+    margin-top: 30px;
+    text-decoration: none;
+    color: #1e3a8a;
+    font-weight: 600;
+}
+
+.back:hover {
+    text-decoration: underline;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 900px) {
+
+    .navbar {
+        flex-direction: column;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .nav-links {
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .container {
+        flex-direction: column;
+        padding: 25px;
+        margin: 25px 16px;
+    }
+
+    .book-image img {
+        height: auto;
+        max-width: 300px;
+    }
+
+    .book-title {
+        font-size: 28px;
+    }
+
+    .price {
+        font-size: 26px;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
