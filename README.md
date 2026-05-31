@@ -4,7 +4,8 @@ A full-stack e-commerce bookstore platform built using Java Servlets, JSP, JDBC,
 
 ---
 
-## 🎥 Project Demo
+## 🎥 Project Demo:
+https://1drv.ms/v/c/99e7c2a67d1ed93e/IQB10BIEI9R_SIQ1LuCKv30yARPwv_haHbQkobzvOF5Pg-A?e=wfwZjb
 
 
 ---
