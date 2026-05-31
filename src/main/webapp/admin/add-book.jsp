@@ -32,7 +32,7 @@ body {
 /* FORM BOX */
 .form-container {
     width: 100%;
-    max-width: 450px;   /* 🔥 THIS FIXES OVERFLOW */
+    max-width: 450px;   /*  THIS FIXES OVERFLOW */
     background: white;
     padding: 25px;
     border-radius: 12px;

@@ -199,7 +199,9 @@ for(Order o : orders){
         %>
 
         <div class="item">
-            <img src="<%=item.getImageUrl()%>">
+            <img 
+     src="<%= request.getContextPath() %>/assets/<%= item.getImageUrl() %>"
+     alt="Book Image">
             <div>
                 <b><%=item.getTitle()%></b><br>
                 Qty: <%=item.getQuantity()%> |

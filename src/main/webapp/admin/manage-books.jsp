@@ -262,7 +262,9 @@ input[type="number"] {
 				<td><%=b.getBookId()%></td>
 
 				<td>
-					<img class="book-img" src="<%=b.getImageUrl()%>">
+					<img class="book-img"
+     src="<%= request.getContextPath() %>/assets/<%= b.getImageUrl() %>"
+     alt="Book Image">
 				</td>
 
 				<td><%=b.getTitle()%></td>
