@@ -29,21 +29,41 @@ public class BooksServlet extends HttpServlet {
             // DAO OBJECT
             BookDAO dao = new BookDAOImpl();
 
-            // GET CATEGORY PARAMETER
+         // GET SEARCH & CATEGORY PARAMETERS
+            String search = request.getParameter("search");
             String categoryParam = request.getParameter("categoryId");
-
+            
             List<Book> books;
 
-            // =========================
-            // FILTER BY CATEGORY
-            // =========================
-            if (categoryParam != null && !categoryParam.trim().isEmpty()) {
-                int categoryId = Integer.parseInt(categoryParam);
-                books = dao.getBooksByCategory(categoryId);
-            } else {
-                // ALL BOOKS
-                books = dao.getAllBooks();
-            }
+         // =========================
+         // SEARCH BOOKS
+         // =========================
+         if (search != null && !search.trim().isEmpty()) {
+
+             books = dao.searchBooks(search.trim());
+
+             // Keep the search text after page refresh
+             request.setAttribute("searchKeyword", search);
+         }
+
+         // =========================
+         // FILTER BY CATEGORY
+         // =========================
+         else if (categoryParam != null && !categoryParam.trim().isEmpty()) {
+
+             int categoryId = Integer.parseInt(categoryParam);
+
+             books = dao.getBooksByCategory(categoryId);
+         }
+
+         // =========================
+         // SHOW ALL BOOKS
+         // =========================
+         else {
+
+             books = dao.getAllBooks();
+
+         }
 
             // SEND BOOKS TO JSP
             request.setAttribute("books", books);

@@ -240,7 +240,118 @@ public boolean updateStock(
         return b;
     }
     
+    @Override
+    public List<Book> searchBooks(String keyword) throws Exception {
+
+        // List to store matching books
+        List<Book> list = new ArrayList<>();
+
+     // Search books by:
+     // 1. Title
+     // 2. Author
+     // 3. Category Name
+     //
+     // Example:
+     // Java      -> matches title
+     // Rowling   -> matches author
+     // Fiction   -> matches category
+        String sql =
+        	    "SELECT b.* " +
+        	    "FROM books b " +
+        	    "LEFT JOIN categories c ON b.category_id = c.category_id " +
+        	    "WHERE LOWER(b.title) LIKE ? " +
+        	    "OR LOWER(b.author) LIKE ? " +
+        	    "OR LOWER(c.category_name) LIKE ?";
+
+        try (
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            // Add % on both sides so partial matches work.
+            //
+            // Example:
+            // Searching "java"
+            // becomes "%java%"
+            //
+            // Matches:
+            // Java
+            // Core Java
+            // Advanced Java
+        	String search = "%" + keyword.toLowerCase() + "%";
+
+        	ps.setString(1, search);
+        	ps.setString(2, search);
+        	ps.setString(3, search);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                // Convert every database row
+                // into a Book object.
+                while (rs.next()) {
+
+                    list.add(mapBook(rs));
+                }
+            }
+        }
+
+        // Return matching books to BooksServlet
+        return list;
+    }
     
+    
+ // ==========================
+ // SEARCH SUGGESTIONS
+ // ==========================
+// @Override
+// public List<String> getSearchSuggestions(String keyword) throws Exception {
+//
+//     List<String> suggestions = new ArrayList<>();
+//
+//     String sql =
+//             "SELECT DISTINCT suggestion FROM ("
+//
+//           + "SELECT title AS suggestion "
+//           + "FROM books "
+//           + "WHERE LOWER(title) LIKE ? "
+//
+//           + "UNION "
+//
+//           + "SELECT author "
+//           + "FROM books "
+//           + "WHERE LOWER(author) LIKE ? "
+//
+//           + "UNION "
+//
+//           + "SELECT category_name "
+//           + "FROM categories "
+//           + "WHERE LOWER(category_name) LIKE ? "
+//
+//           + ") temp "
+//           + "LIMIT 8";
+//
+//     try (
+//             Connection con = DBConnection.getConnection();
+//             PreparedStatement ps = con.prepareStatement(sql)
+//     ) {
+//
+//         String search = keyword.toLowerCase() + "%";
+//
+//         ps.setString(1, search);
+//         ps.setString(2, search);
+//         ps.setString(3, search);
+//
+//         ResultSet rs = ps.executeQuery();
+//
+//         while (rs.next()) {
+//             suggestions.add(rs.getString("suggestion"));
+//         }
+//     }
+//
+//     return suggestions;
+// }
+//    
+
     
  // ==========================
  // TOTAL BOOKS

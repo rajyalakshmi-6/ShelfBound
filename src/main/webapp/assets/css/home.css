@@ -378,6 +378,201 @@ body {
     padding: 10px 0;
 }
 
+/* ================= HERO SEARCH ================= */
+
+.hero-search{
+
+    margin-top:35px;
+
+    width:520px;
+    height:48px;
+
+    margin-left:auto;
+    margin-right:auto;
+
+    display:flex;
+    align-items:center;
+    gap: 0;
+
+    background:#ffffff;
+
+    border:2px solid #e5e5e5;
+
+    border-radius:50px;
+
+    overflow:hidden;
+
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+}
+
+
+/* Input */
+
+.hero-search input{
+
+    flex:1;
+
+    height:100%;
+
+    border:none;
+
+    outline:none;
+
+    background:transparent;
+
+    padding:0 18px 0 22px;
+
+    font-size:15px;
+
+    color:#1e293b;
+
+    font-weight: 400;
+
+    box-sizing: border-box;
+
+}
+
+
+/* Placeholder */
+
+.hero-search input::placeholder{
+
+    color:#b0b8c1;
+
+    font-weight: 400;
+
+}
+
+
+/* Search Button with Orange Background */
+
+.search-btn {
+
+    width: 48px;
+    height: 48px;
+
+    background: #ff7a00;
+
+    border: none;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    
+    margin: 0;
+    
+    padding: 0;
+    
+    transition: all 0.3s ease;
+    
+    border-radius: 0 50px 50px 0;
+
+}
+
+
+/* Search Button Hover */
+
+.search-btn:hover {
+
+    background: #e86d00;
+
+    transform: scale(1.08);
+
+}
+
+
+/* Search Button Active */
+
+.search-btn:active {
+
+    transform: scale(0.95);
+
+}
+
+
+/* SVG Icon Color */
+
+.search-btn svg {
+
+    color: #ffffff;
+    
+    transition: all 0.3s ease;
+    
+    width: 20px;
+    
+    height: 20px;
+
+}
+
+
+/* Focus Effect */
+
+.hero-search:focus-within{
+
+    box-shadow: 0 10px 32px rgba(255, 122, 0, 0.2);
+    
+    border-color: #ff7a00;
+
+}
+
+
+.suggestions {
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 300px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.suggestions div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestions div:hover {
+    background-color: #f0f0f0;
+}
+
+/* Mobile */
+
+@media(max-width:768px){
+
+.hero-search{
+
+    width:90%;
+    height:46px;
+    
+    border: 2px solid #e5e5e5;
+
+}
+
+.hero-search input{
+    padding:0 16px 0 20px;
+    font-size:14px;
+}
+
+.search-btn {
+    width: 46px;
+    height: 46px;
+    border-radius: 0 50px 50px 0;
+}
+
+.search-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+}
+
+
+
 /* ================= RESPONSIVE DESIGN ================= */
 @media (max-width: 900px) {
     .navbar {

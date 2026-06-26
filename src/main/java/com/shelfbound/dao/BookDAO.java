@@ -34,5 +34,13 @@ public interface BookDAO {
  boolean updateStock(
          int bookId,
          int stockQuantity) throws Exception;
+ 
+//==========================
+//SEARCH BOOKS
+//==========================
+List<Book> searchBooks(String keyword) throws Exception;
+
+//Returns matching titles, authors and categories for autocomplete
+//List<String> getSearchSuggestions(String keyword) throws Exception;
     
 }

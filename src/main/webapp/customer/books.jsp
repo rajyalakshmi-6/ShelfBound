@@ -6,6 +6,7 @@
 
 <%
     List<Book> books        = (List<Book>) request.getAttribute("books");
+    String search = (String)request.getAttribute("search");
     String     errorMessage = (String)     request.getAttribute("errorMessage");
     String     username     = (String)     session.getAttribute("username");
 
@@ -80,7 +81,25 @@
     <!-- ================= BOOK SECTION ================= -->
     <div class="book-section">
 
-        <h2>Books Collection</h2>
+        <%
+if(search != null && !search.isEmpty()){
+%>
+
+<h2>
+Search Results for "<%=search%>"
+</h2>
+
+<%
+}else{
+%>
+
+<h2>
+Books Collection
+</h2>
+
+<%
+}
+%>
 
         <%
             if (errorMessage != null) {
@@ -132,7 +151,25 @@
                     }
                 } else {
             %>
-                <p class="no-books">No books available right now.</p>
+               <%
+if(search != null && !search.isEmpty()){
+%>
+
+<p class="no-books">
+No books found for "<%=search%>"
+</p>
+
+<%
+}else{
+%>
+
+<p class="no-books">
+No books available with your search.
+</p>
+
+<%
+}
+%>
             <%
                 }
             %>
