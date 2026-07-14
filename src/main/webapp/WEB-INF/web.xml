@@ -131,8 +131,19 @@
         <url-pattern>/cart</url-pattern>
     </servlet-mapping>
 
+<!-- REMOVE this old mapping -->
+<!-- <servlet-mapping><url-pattern>/cancelOrder</url-pattern></servlet-mapping> -->
 
-    <!-- ========================= -->
+<!-- ADD this new servlet -->
+<servlet>
+    <servlet-name>OrderActionServlet</servlet-name>
+    <servlet-class>com.shelfbound.servlet.OrderActionServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>OrderActionServlet</servlet-name>
+    <url-pattern>/orderAction</url-pattern>
+</servlet-mapping>
+
     <!-- REMOVE CART SERVLET -->
     <!-- ========================= -->
 
@@ -291,44 +302,12 @@
 
 
 
-<servlet>
-    <servlet-name>ContactMessageServlet</servlet-name>
-
-    <servlet-class>
-        com.shelfbound.servlet.ContactMessageServlet
-    </servlet-class>
-</servlet>
-
-<servlet-mapping>
-    <servlet-name>ContactMessageServlet</servlet-name>
-
-    <url-pattern>/contact</url-pattern>
-</servlet-mapping>
-
-<!-- ========================= -->
-<!-- ADMIN /user LOGOUT -->
-<!-- ========================= -->
-
-<servlet>
-    <servlet-name>LogoutServlet</servlet-name>  <!-- we can give any name servlet class must br correct -->
-    <servlet-class>com.shelfbound.servlet.admin.LogoutServlet</servlet-class>
-</servlet>
-
-<servlet-mapping>
-    <servlet-name>LogoutServlet</servlet-name>
-    <url-pattern>/logout</url-pattern>
-</servlet-mapping>
 
 
-<servlet>
-    <servlet-name>AboutServlet</servlet-name>
-    <servlet-class>com.shelfbound.servlet.AboutServlet</servlet-class>
-</servlet>
 
-<servlet-mapping>
-    <servlet-name>AboutServlet</servlet-name>
-    <url-pattern>/about</url-pattern>
-</servlet-mapping>
+
+
+
 
     <!-- ========================= -->
     <!-- DEFAULT WELCOME PAGE -->

@@ -4,7 +4,7 @@ import com.shelfbound.model.Book;
 import java.util.List;
 
 public interface WishlistDAO {
-
+    
     // Add a book to user's wishlist (ignore if already exists)
     void addToWishlist(int userId, int bookId);
 
@@ -18,5 +18,8 @@ public interface WishlistDAO {
     boolean isInWishlist(int userId, int bookId);
     
  // In WishlistDAO.java
-    List<Integer> getWishlistBookIds(String username);
+    List<Integer> getWishlistBookIds(int userId);
+    
+    int getWishlistCount(int userId);
+    
 }

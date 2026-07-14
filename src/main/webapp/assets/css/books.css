@@ -1,28 +1,49 @@
-/* ================= CSS VARIABLES & RESET ================= */
+/* =====================================================
+   BOOKS PAGE - ShelfBound
+   Premium e-commerce book listing page
+   Matches home.css design standard
+===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
+
 :root {
-    --primary-blue: #1e3a8a;
+    --navy-900: #0f172a;
+    --navy-700: #1e3a8a;
+    --navy-600: #1d4ed8;
     --accent-orange: #ff7a00;
-    --bg-main: #fbfbfb;
+    --orange-100: #fff1e0;
+    --orange-50: #fff8f0;
+    --bg-main: #f8fafc;
     --bg-card: #ffffff;
     --text-primary: #1e293b;
     --text-muted: #64748b;
     --border-light: #e2e8f0;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.05);
-    --shadow-hover: 0 10px 20px rgba(15, 23, 42, 0.08);
+    --success: #16a34a;
+    --rose: #ec4899;
+    --rose-100: #fdf2f8;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 16px rgba(15,23,42,.08);
+    --shadow-hover: 0 10px 24px rgba(15,23,42,.12);
     --radius-lg: 16px;
     --radius-md: 12px;
-    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-sm: 8px;
+    --transition: .25s cubic-bezier(.4,0,.2,1);
 }
 
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-main);
+    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-main);
     color: var(--text-primary);
-    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
 }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
 /* ================= NAVBAR ================= */
 .navbar {
@@ -30,108 +51,175 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 14px 40px;
-    background: linear-gradient(135deg, #dff6ff, #a8d8ff);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid #e8e6df;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: var(--shadow-sm);
 }
 
 .logo-container {
-    display: inline-flex;
-    flex-direction: row;
+    display: flex;
     align-items: center;
     gap: 0;
     text-decoration: none;
     transition: var(--transition);
-    max-height: 44px;
-    overflow: hidden;
 }
 
-.logo-container:hover {
-    opacity: 0.95;
-}
+.logo-container:hover { opacity: 0.95; }
 
-.logo-img {
-    height: 36px;
-    width: auto;
-    max-width: 36px;
-    object-fit: contain;
-    display: inline-block;
-    flex-shrink: 0;
-    margin: 0;
-    padding: 0;
-}
+.logo-img { height: 32px; width: auto; object-fit: contain; }
 
 .logo {
     font-size: 28px;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: -0.5px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     line-height: 1;
-    margin: 0;
-    padding: 0;
 }
 
-.logo-shelf { color: #ff7a00; }
-.logo-bound { color: #1e3a8a; }
+.logo-shelf { color: var(--accent-orange); }
+.logo-bound { color: var(--navy-700); }
 
 .nav-links {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 12px;
 }
 
 .nav-links a {
     text-decoration: none;
     color: var(--text-muted);
-    font-weight: 550;
+    font-weight: 600;
     font-size: 14px;
-    padding: 8px 12px;
+    padding: 8px 14px;
     border-radius: 8px;
     transition: var(--transition);
 }
 
 .nav-links a:hover {
-    color: var(--primary-blue);
-    background-color: rgba(30, 58, 138, 0.05);
+    color: var(--navy-700);
+    background: rgba(30, 58, 138, 0.07);
+}
+
+.nav-links a.active {
+    color: var(--navy-700);
+    background: rgba(30, 58, 138, 0.07);
 }
 
 .welcome-user {
-    color: var(--primary-blue);
-    font-weight: 600;
-    font-size: 14px;
-    padding: 8px 12px;
-    background-color: rgba(30, 58, 138, 0.06);
+    color: var(--navy-700);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 14px;
+    background: rgba(30, 58, 138, 0.06);
     border-radius: 8px;
+}
+
+/* ================= LOGOUT BUTTON STYLES ================= */
+.btn-logout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    vertical-align: middle;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-logout:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+}
+
+.btn-logout svg {
+    display: block;
+}
+
+
+
+/* ================= PROFILE AVATAR ================= */
+.profile-avatar-link {
+    display: inline-flex;
+    text-decoration: none;
+    padding: 0 !important;
+}
+
+.profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--navy-700);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 6px rgba(30, 58, 138, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    user-select: none;
+}
+
+.profile-avatar-guest {
+    background: #f1f5f9;
+    font-size: 16px;
+    box-shadow: none;
+    border: 1.5px solid var(--border-light);
+    color: var(--text-muted);
+}
+
+.profile-avatar-link:hover .profile-avatar {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(30, 58, 138, 0.4);
 }
 
 /* ================= LAYOUT ================= */
 .layout {
     display: flex;
+    max-width: 1440px;
+    margin: 0 auto;
+    min-height: calc(100vh - 72px);
 }
 
 /* ================= SIDEBAR ================= */
-/* NO CHANGES to sidebar */
 .sidebar {
     width: 230px;
     background: var(--bg-card);
     padding: 28px 20px;
-    min-height: 100vh;
+    min-height: calc(100vh - 72px);
     border-right: 1px solid var(--border-light);
     flex-shrink: 0;
+    position: sticky;
+    top: 72px;
+    height: fit-content;
 }
 
 .sidebar h3 {
-    color: var(--primary-blue);
-    font-size: 15px;
+    color: var(--text-primary);
+    font-size: 13px;
     font-weight: 700;
-    letter-spacing: -0.3px;
+    letter-spacing: 0.5px;
     margin: 0 0 18px;
     padding: 0 4px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .sidebar a {
@@ -147,23 +235,185 @@ body {
 }
 
 .sidebar a:hover {
-    background-color: var(--primary-blue);
+    background-color: rgba(30, 58, 138, 0.06);
+    color: var(--navy-700);
+}
+
+.sidebar a.active {
+    background: linear-gradient(135deg, var(--navy-700), var(--navy-600));
     color: #ffffff;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
 }
 
 /* ================= BOOK SECTION ================= */
-/* NO CHANGES to book section header */
 .book-section {
     flex: 1;
     padding: 32px 36px;
+    min-width: 0;
 }
 
-.book-section h2 {
-    color: var(--primary-blue);
-    font-size: 24px;
+/* Section Header */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+.section-header h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
     font-weight: 700;
     letter-spacing: -0.5px;
-    margin: 0 0 26px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-primary);
+}
+
+.section-header h2 .section-icon {
+    font-size: 24px;
+}
+
+/* ================= COUPON CARDS SCROLLING SECTION ================= */
+.coupon-strip {
+    width: 100%;
+    overflow: hidden;
+    background: var(--bg-main);
+    padding: 12px 0 16px;
+    margin-bottom: 24px;
+    position: relative;
+    border-radius: var(--radius-md);
+}
+
+.coupon-strip::before,
+.coupon-strip::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 80px;
+    z-index: 2;
+    pointer-events: none;
+}
+.coupon-strip::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bg-main), transparent);
+}
+.coupon-strip::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--bg-main), transparent);
+}
+
+.coupon-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: couponScroll 22s linear infinite;
+}
+
+.coupon-strip:hover .coupon-track {
+    animation-play-state: paused;
+}
+
+.coupon-card {
+    display: flex;
+    align-items: stretch;
+    background: #ffffff;
+    border: 1.5px solid #d7f0dd;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    min-width: 300px;
+    max-width: 300px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    cursor: pointer;
+}
+
+.coupon-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(22, 163, 74, 0.18);
+}
+
+.coupon-ribbon {
+    flex-shrink: 0;
+    width: 64px;
+    background: linear-gradient(160deg, #22c55e, #16a34a);
+    color: #ffffff;
+    font-weight: 800;
+    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.1;
+    clip-path: polygon(0 0, 100% 0, 82% 50%, 100% 100%, 0 100%);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
+
+.coupon-ribbon span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.coupon-divider {
+    position: relative;
+    width: 0;
+    border-left: 2px dashed #a7e8b8;
+    margin: 10px 0;
+}
+.coupon-divider::before,
+.coupon-divider::after {
+    content: "";
+    position: absolute;
+    left: -8px;
+    width: 16px;
+    height: 16px;
+    background: var(--bg-main);
+    border-radius: 50%;
+}
+.coupon-divider::before { top: -18px; }
+.coupon-divider::after  { bottom: -18px; }
+
+.coupon-content {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.coupon-title {
+    margin: 0;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+}
+
+.coupon-sub {
+    margin: 0;
+    font-size: 11.5px;
+    color: var(--text-muted);
+}
+
+.coupon-code {
+    background: #eafaf0;
+    color: var(--navy-700);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+    border: 1px dashed #7fd99a;
+}
+
+@keyframes couponScroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 
 /* ================= ERROR ================= */
@@ -172,53 +422,76 @@ body {
     color: #dc2626;
     padding: 14px 18px;
     border-left: 4px solid #dc2626;
-    border-radius: 10px;
+    border-radius: var(--radius-md);
     margin-bottom: 22px;
     font-size: 14px;
+    font-weight: 500;
 }
 
 /* ================= BOOK GRID ================= */
-/* NO CHANGES to grid layout */
 .book-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(195px, 1fr));
-    gap: 22px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
 }
 
 /* ================= BOOK CARD ================= */
-/* NO CHANGES to card itself - only author row updated below */
 .book-link {
     text-decoration: none;
     color: inherit;
+    display: block;
+    transition: var(--transition);
 }
 
 .book-card {
     background: var(--bg-card);
-    padding: 12px;
-    border-radius: var(--radius-md);
     border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: 12px;
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden;
 }
 
 .book-card:hover {
-    transform: translateY(-6px);
+    transform: translateY(-8px);
     box-shadow: var(--shadow-hover);
     border-color: #cbd5e1;
 }
 
+.book-card .discount-tag {
+    position: absolute;
+    top: 18px;
+    left: 0;
+    background: linear-gradient(135deg, var(--accent-orange), #ffa54a);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 0 6px 6px 0;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(255,122,0,0.3);
+}
+
 .book-card img {
     width: 100%;
-    height: 250px;
+    height: 260px;
     object-fit: cover;
     border-radius: 8px;
     background-color: #f1f5f9;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.book-card:hover img {
+    transform: scale(1.03);
 }
 
 .book-card h3 {
-    font-size: 14.5px;
+    font-size: 14px;
     font-weight: 600;
     margin: 12px 0 4px;
     color: var(--text-primary);
@@ -227,32 +500,24 @@ body {
     white-space: nowrap;
 }
 
-/* General p tag inside card - unchanged */
-.book-card p {
-    font-size: 12.5px;
-    color: var(--text-muted);
-    margin: 2px 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.book-card .price {
+    color: var(--navy-700);
+    font-weight: 800;
+    font-size: 16px;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.price {
-    color: var(--primary-blue) !important;
-    font-weight: 700;
-    font-size: 15px !important;
-    margin-top: 8px;
-}
-
-.no-books {
+.book-card .price .original {
+    font-size: 12px;
     color: var(--text-muted);
-    font-size: 14px;
-    font-style: italic;
-    padding: 10px 0;
+    text-decoration: line-through;
+    font-weight: 500;
 }
 
 /* ================= AUTHOR ROW ================= */
-/* CHANGED: author line is now a flex row so heart sits beside the name */
 .author-row {
     display: flex;
     align-items: center;
@@ -261,9 +526,8 @@ body {
     gap: 6px;
 }
 
-/* Author name takes remaining space, truncates if too long */
 .author-name {
-    font-size: 12.5px;
+    font-size: 12px;
     color: var(--text-muted);
     overflow: hidden;
     text-overflow: ellipsis;
@@ -271,26 +535,14 @@ body {
     flex: 1;
 }
 
-/* ================= WISHLIST HEART BUTTON ================= */
-/* Amazon/Flipkart style:
-   - Default   : white bg, grey border, grey heart
-   - Hover     : light pink bg, pink border, pink heart
-   - Wishlisted: stays pink (like Flipkart saved state)        */
-
-.wishlist-form {
-    margin: 0;
-    padding: 0;
-    flex-shrink: 0;
-    display: inline-flex;
-}
-
+/* ================= WISHLIST HEART ================= */
 .wishlist-btn {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    border: 1.5px solid #d1d5db;       /* grey border - default unpinned */
-    background: #ffffff;                /* white bg */
-    color: #9ca3af;                     /* grey heart */
+    border: 1.5px solid #d1d5db;
+    background: #ffffff;
+    color: #9ca3af;
     font-size: 15px;
     cursor: pointer;
     display: flex;
@@ -298,12 +550,11 @@ body {
     justify-content: center;
     padding: 0;
     line-height: 1;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     transition: all 0.2s ease;
     flex-shrink: 0;
 }
 
-/* Hover: pink heart, pink border, soft pink bg */
 .wishlist-btn:hover {
     border-color: #ec4899;
     background: #fdf2f8;
@@ -312,7 +563,6 @@ body {
     box-shadow: 0 2px 10px rgba(236, 72, 153, 0.22);
 }
 
-/* Wishlisted state: stays pink after click */
 .wishlist-btn.wishlisted {
     background: #fdf2f8;
     border-color: #ec4899;
@@ -320,46 +570,162 @@ body {
     box-shadow: 0 2px 10px rgba(236, 72, 153, 0.22);
 }
 
-/* Click press animation */
 .wishlist-btn:active {
     transform: scale(0.92);
 }
 
+/* ================= LOAD MORE ================= */
+.load-more-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-light);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.load-more-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 40px;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-light);
+    border-radius: var(--radius-xl);
+    color: var(--navy-700);
+    font-size: 15px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.load-more-btn:hover {
+    border-color: var(--navy-700);
+    background: rgba(30, 58, 138, 0.04);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.load-more-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.load-more-count {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* ================= HIDDEN / FADE IN STATES ================= */
+.book-hidden {
+    display: none !important;
+}
+
+.book-fade-in {
+    animation: fadeInBook 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInBook {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.no-books {
+    color: var(--text-muted);
+    font-size: 15px;
+    font-style: italic;
+    padding: 40px 0;
+    text-align: center;
+    grid-column: 1 / -1;
+}
+
+/* ================= TOAST NOTIFICATIONS ================= */
+.toast-container {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast {
+    background: var(--bg-card);
+    border-left: 4px solid var(--success);
+    padding: 16px 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-hover);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 280px;
+    animation: toastIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.toast.error { border-left-color: #ef4444; }
+.toast.info { border-left-color: var(--navy-600); }
+
+@keyframes toastIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.toast-exit {
+    animation: toastOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes toastOut {
+    to { transform: translateX(100%); opacity: 0; }
+}
+
 /* ================= RESPONSIVE ================= */
-@media (max-width: 900px) {
-
-    .navbar {
-        flex-direction: column;
-        gap: 16px;
-        padding: 20px;
-    }
-
-    .nav-links {
-        justify-content: center;
-        gap: 8px;
-    }
-
-    .layout {
-        flex-direction: column;
-    }
-
+@media (max-width: 1024px) {
+    .layout { flex-direction: column; }
     .sidebar {
         width: 100%;
         min-height: auto;
         border-right: none;
         border-bottom: 1px solid var(--border-light);
         padding: 20px;
+        position: static;
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
     }
+    .sidebar h3 { margin: 0 12px 0 0; }
+    .sidebar a { margin-bottom: 0; padding: 8px 14px; }
+    .book-section { padding: 24px 20px; }
+    .book-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+}
 
-    .book-section {
-        padding: 24px 20px;
-    }
+@media (max-width: 900px) {
+    .navbar { flex-direction: column; gap: 12px; padding: 14px 20px; }
+    .nav-links { justify-content: center; gap: 8px; }
+    .book-section { padding: 20px 16px; }
+    .book-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .book-card img { height: 220px; }
+    .coupon-card { min-width: 260px; max-width: 260px; }
+    .section-header h2 { font-size: 22px; }
+    .toast { min-width: 240px; }
+}
 
-    .book-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    }
-
-    .book-card img {
-        height: 215px;
-    }
+@media (max-width: 480px) {
+    .book-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .book-card { padding: 10px; }
+    .book-card img { height: 180px; }
+    .book-card h3 { font-size: 13px; }
+    .book-card .price { font-size: 14px; }
+    .author-name { font-size: 11px; }
+    .wishlist-btn { width: 28px; height: 28px; font-size: 14px; }
+    .discount-tag { font-size: 9px; padding: 3px 8px; }
+    .toast { min-width: 200px; font-size: 13px; padding: 12px 16px; }
+    .load-more-btn { padding: 12px 28px; font-size: 14px; }
 }

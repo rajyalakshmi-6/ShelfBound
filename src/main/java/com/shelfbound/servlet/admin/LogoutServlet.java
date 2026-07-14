@@ -3,11 +3,18 @@ package com.shelfbound.servlet.admin;
 import java.io.IOException;  // helping to logout admin and user
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+//
+//
+//<!-- ========================= -->
+//<!-- ADMIN /user LOGOUT -->
+//<!-- ========================= -->
+@WebServlet("/logout")
 public class LogoutServlet extends HttpServlet {
 
     private static final long serialVersionUID = 1L;

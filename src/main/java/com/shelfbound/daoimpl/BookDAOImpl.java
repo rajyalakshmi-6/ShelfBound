@@ -224,22 +224,25 @@ public boolean updateStock(
     // ==========================
     // COMMON BOOK MAPPER
     // ==========================
-    private Book mapBook(ResultSet rs) throws Exception {
+// ==========================
+// COMMON BOOK MAPPER
+// ==========================
+private Book mapBook(ResultSet rs) throws Exception {
 
-        Book b = new Book();
+    Book b = new Book();
 
-        b.setBookId(rs.getInt("book_id"));
-        b.setTitle(rs.getString("title"));
-        b.setAuthor(rs.getString("author"));
-        b.setDescription(rs.getString("description"));
-        b.setPrice(rs.getDouble("price"));
-        b.setStockQuantity(rs.getInt("stock_quantity"));
-        b.setImageUrl(rs.getString("image_url"));
-        b.setRating(rs.getDouble("rating"));
+    b.setBookId(rs.getInt("book_id"));
+    b.setTitle(rs.getString("title"));
+    b.setAuthor(rs.getString("author"));
+    b.setDescription(rs.getString("description"));
+    b.setPrice(rs.getDouble("price"));
+    b.setStockQuantity(rs.getInt("stock_quantity"));
+    b.setImageUrl(rs.getString("image_url"));
+    b.setRating(rs.getDouble("rating"));
+    b.setCategoryId(rs.getInt("category_id"));  // ← ADDED
 
-        return b;
-    }
-    
+    return b;
+}
     @Override
     public List<Book> searchBooks(String keyword) throws Exception {
 

@@ -74,10 +74,11 @@ public class BooksServlet extends HttpServlet {
             // for already-wishlisted books on page load
             // =========================
             Set<Integer> wishlistIds = new HashSet<>();
-            String username = (String) request.getSession().getAttribute("username");
-            if (username != null) {
+            Object userIdObj = request.getSession().getAttribute("userId");
+            if (userIdObj != null) {
+                int userId = (int) userIdObj;
                 WishlistDAO wishlistDAO = new WishlistDAOImpl();
-                List<Integer> ids = wishlistDAO.getWishlistBookIds(username);
+                List<Integer> ids = wishlistDAO.getWishlistBookIds(userId);
                 wishlistIds.addAll(ids);
             }
             request.setAttribute("wishlistIds", wishlistIds);
@@ -93,11 +94,12 @@ public class BooksServlet extends HttpServlet {
 
             // WISHLIST IDS — also set on error path so JSP never gets null
             Set<Integer> wishlistIds = new HashSet<>();
-            String username = (String) request.getSession().getAttribute("username");
-            if (username != null) {
+            Object userIdObj = request.getSession().getAttribute("userId");
+            if (userIdObj != null) {
                 try {
+                    int userId = (int) userIdObj;
                     WishlistDAO wishlistDAO = new WishlistDAOImpl();
-                    List<Integer> ids = wishlistDAO.getWishlistBookIds(username);
+                    List<Integer> ids = wishlistDAO.getWishlistBookIds(userId);
                     wishlistIds.addAll(ids);
                 } catch (Exception ex) {
                     ex.printStackTrace();
@@ -116,11 +118,12 @@ public class BooksServlet extends HttpServlet {
 
             // WISHLIST IDS — also set on error path so JSP never gets null
             Set<Integer> wishlistIds = new HashSet<>();
-            String username = (String) request.getSession().getAttribute("username");
-            if (username != null) {
+            Object userIdObj = request.getSession().getAttribute("userId");
+            if (userIdObj != null) {
                 try {
+                    int userId = (int) userIdObj;
                     WishlistDAO wishlistDAO = new WishlistDAOImpl();
-                    List<Integer> ids = wishlistDAO.getWishlistBookIds(username);
+                    List<Integer> ids = wishlistDAO.getWishlistBookIds(userId);
                     wishlistIds.addAll(ids);
                 } catch (Exception ex) {
                     ex.printStackTrace();

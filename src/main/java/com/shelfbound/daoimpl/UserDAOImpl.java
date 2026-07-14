@@ -116,9 +116,7 @@ public class UserDAOImpl implements UserDAO {
         return false;
     }
 
-    // =========================
     // CHECK EMAIL EXISTS
-    // =========================
     public boolean isEmailExists(String email) {
 
         String sql =
@@ -134,6 +132,36 @@ public class UserDAOImpl implements UserDAO {
             ResultSet rs = ps.executeQuery();
 
             return rs.next();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+    
+    @Override
+    public boolean updateUser(User user) {
+
+        String sql =
+            "UPDATE users SET " +
+            "username=?, phone=?, address=?, city=?, state=?, pincode=? " +
+            "WHERE user_id=?";
+
+        try (
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+        ) {
+
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPhone());
+            ps.setString(3, user.getAddress());
+            ps.setString(4, user.getCity());
+            ps.setString(5, user.getState());
+            ps.setString(6, user.getPincode());
+            ps.setInt(7, user.getUserId());
+
+            return ps.executeUpdate() > 0;
 
         } catch (Exception e) {
             e.printStackTrace();

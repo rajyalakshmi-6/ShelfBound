@@ -117,14 +117,14 @@ public class WishlistDAOImpl implements WishlistDAO {
     }
     
     
+ // ─── GET WISHLIST BOOK IDS FOR USER ─────────────────────────────────────────
     @Override
-    public List<Integer> getWishlistBookIds(String username) {
+    public List<Integer> getWishlistBookIds(int userId) {
         List<Integer> ids = new ArrayList<>();
-        // Adjust query to match your table/column names
-        String sql = "SELECT book_id FROM wishlist WHERE username = ?";
+        String sql = "SELECT book_id FROM wishlist WHERE user_id = ?";
         try (Connection con = DBConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, username);
+            ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ids.add(rs.getInt("book_id"));
@@ -133,5 +133,30 @@ public class WishlistDAOImpl implements WishlistDAO {
             e.printStackTrace();
         }
         return ids;
+    }
+    
+    @Override
+    public int getWishlistCount(int userId) {
+
+        String sql = "SELECT COUNT(*) FROM wishlist WHERE user_id=?";
+
+        try (
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 }

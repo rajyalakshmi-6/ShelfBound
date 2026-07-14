@@ -1,5 +1,6 @@
 
 package com.shelfbound.servlet;
+import com.shelfbound.model.User;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -87,8 +88,9 @@ public class LoginServlet extends HttpServlet {
             // CHECK LOGIN
             // =========================
             String sql =
-                "SELECT user_id, username FROM users " +
-                "WHERE email=? AND password=?";
+                "SELECT *\r\n"
+                + "FROM users\r\n"
+                + "WHERE email=? AND password=?";
 
             ps = con.prepareStatement(sql);
 
@@ -101,25 +103,35 @@ public class LoginServlet extends HttpServlet {
             // LOGIN SUCCESS
             // =========================
             if (rs.next()) {
+            	
+            	User user = new User();
+            	
 
-                int userId = rs.getInt("user_id");
+            	user.setUserId(rs.getInt("user_id"));
+            	user.setUsername(rs.getString("username"));
+            	user.setEmail(rs.getString("email"));
+            	user.setPhone(rs.getString("phone"));
+            	user.setAddress(rs.getString("address"));
+            	user.setCity(rs.getString("city"));
+            	user.setState(rs.getString("state"));
+            	user.setPincode(rs.getString("pincode"));
+            	
+            	int userId = user.getUserId();
 
-                String dbUsername =
-                    rs.getString("username");
+            	String dbUsername = user.getUsername();
 
                 // CREATE SESSION
-                HttpSession session =
-                    request.getSession();
+                HttpSession session = request.getSession();
 
-                session.setAttribute(
-                    "userId",
-                    userId
-                );
+                session.setAttribute("userId",userId);
 
                 session.setAttribute(
                     "username",
                     dbUsername
                 );
+             // NEW
+                session.setAttribute("loggedUser", user);
+
                 
              // =========================
              // LOAD CART FROM DATABASE

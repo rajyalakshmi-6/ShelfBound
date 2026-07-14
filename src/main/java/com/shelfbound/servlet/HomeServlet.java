@@ -38,11 +38,11 @@ public class HomeServlet extends HttpServlet {
             
          // Get wishlist book IDs for the logged-in user
             Set<Integer> wishlistIds = new HashSet<>();
-            String username = (String) request.getSession().getAttribute("username");
-            if (username != null) {
-                // Assuming you have a WishlistDAO - add this method if not present
+            Object userIdObj = request.getSession().getAttribute("userId");
+            if (userIdObj != null) {
+                int userId = (int) userIdObj;
                 WishlistDAO wishlistDAO = new WishlistDAOImpl();
-                List<Integer> ids = wishlistDAO.getWishlistBookIds(username);
+                List<Integer> ids = wishlistDAO.getWishlistBookIds(userId);
                 wishlistIds.addAll(ids);
             }
             request.setAttribute("wishlistIds", wishlistIds);

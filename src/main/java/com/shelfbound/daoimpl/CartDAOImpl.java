@@ -212,4 +212,52 @@ public class CartDAOImpl implements CartDAO {
 
         return list;
     }
+    
+    @Override
+    public int getCartCount(int userId) {
+
+        String sql = "SELECT COUNT(*) FROM cart WHERE user_id = ?";
+
+        try (
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+    
+    // ==========================================
+    // CLEAR ENTIRE CART FOR USER (After Order)
+    // ==========================================
+    @Override
+    public boolean clearCart(int userId) throws Exception {
+
+        String sql = "DELETE FROM cart " +
+                "WHERE user_id=?";
+
+        try (
+                Connection con =
+                        DBConnection.getConnection();
+
+                PreparedStatement ps =
+                        con.prepareStatement(sql)
+        ) {
+
+            ps.setInt(1, userId);
+
+            return ps.executeUpdate() >= 0; // Returns true even if 0 rows (empty cart)
+        }
+    }
 }

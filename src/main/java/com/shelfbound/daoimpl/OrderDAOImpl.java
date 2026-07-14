@@ -16,7 +16,7 @@ public class OrderDAOImpl implements OrderDAO {
 	    Map<Integer, Order> orderMap = new LinkedHashMap<>();
 
 	    String sql =
-	        "SELECT o.order_id, o.total_amount, o.order_status, o.order_date, " +
+	        "SELECT o.order_id, o.total_amount, o.order_status, o.order_date, o.delivery_date, o.discount_amount, " +
 	        "b.title, b.image_url, oi.quantity, oi.price " +
 	        "FROM orders o " +
 	        "JOIN order_items oi ON o.order_id = oi.order_id " +
@@ -45,6 +45,8 @@ public class OrderDAOImpl implements OrderDAO {
 	                    order.setTotalAmount(rs.getDouble("total_amount"));
 	                    order.setStatus(rs.getString("order_status"));
 	                    order.setOrderDate(rs.getString("order_date"));
+	                    order.setDeliveryDate(rs.getString("delivery_date"));
+	                    order.setDiscountAmount(rs.getDouble("discount_amount"));
 
 	                    order.setItems(new ArrayList<>());
 
@@ -69,7 +71,7 @@ public class OrderDAOImpl implements OrderDAO {
 	public Order getOrderById(int orderId, int userId) throws Exception {
 
 		String sql =
-			    "SELECT o.order_id, o.total_amount, o.order_status, o.order_date, " +
+			    "SELECT o.order_id, o.total_amount, o.order_status, o.order_date, o.delivery_date, o.discount_amount, " +
 			    "o.shipping_address, b.title, b.image_url, oi.quantity, oi.price " +
 			    "FROM orders o " +
 			    "JOIN order_items oi ON o.order_id = oi.order_id " +
@@ -97,6 +99,8 @@ public class OrderDAOImpl implements OrderDAO {
 	                    order.setTotalAmount(rs.getDouble("total_amount"));
 	                    order.setStatus(rs.getString("order_status"));
 	                    order.setOrderDate(rs.getString("order_date"));
+	                    order.setDeliveryDate(rs.getString("delivery_date"));
+	                    order.setDiscountAmount(rs.getDouble("discount_amount"));
 	                    order.setShippingAddress(rs.getString("shipping_address"));
 	                    order.setItems(new ArrayList<>());
 	                }
@@ -172,7 +176,7 @@ public class OrderDAOImpl implements OrderDAO {
 	    Map<Integer, Order> orderMap = new LinkedHashMap<>();
 
 	    String sql =
-	    		"SELECT o.order_id, o.user_id, o.total_amount, o.order_status, o.order_date, " +
+	    		"SELECT o.order_id, o.user_id, o.total_amount, o.order_status, o.order_date, o.delivery_date, o.discount_amount, " +
 	    		"o.shipping_address, b.title, b.image_url, oi.quantity, oi.price " +
 	    		"FROM orders o " +
 	    		"JOIN order_items oi ON o.order_id = oi.order_id " +
@@ -197,6 +201,8 @@ public class OrderDAOImpl implements OrderDAO {
 	                order.setTotalAmount(rs.getDouble("total_amount"));
 	                order.setStatus(rs.getString("order_status"));
 	                order.setOrderDate(rs.getString("order_date"));
+	                order.setDeliveryDate(rs.getString("delivery_date"));
+	                order.setDiscountAmount(rs.getDouble("discount_amount"));
 	                order.setUserId(rs.getInt("user_id"));
 	                order.setShippingAddress(rs.getString("shipping_address"));
 
@@ -222,19 +228,47 @@ public class OrderDAOImpl implements OrderDAO {
 	@Override
 	public boolean updateOrderStatus(int orderId, String status) throws Exception {
 
-	    String sql =
-	        "UPDATE orders SET order_status=? WHERE order_id=?";
+	    String sql;
+	    if ("Delivered".equalsIgnoreCase(status)) {
+	        sql = "UPDATE orders SET order_status=?, delivery_date=NOW() WHERE order_id=?";
+	    } else {
+	        sql = "UPDATE orders SET order_status=? WHERE order_id=?";
+	    }
+
+	    try (
+	        Connection con = DBConnection.getConnection();
+	        PreparedStatement ps = con.prepareStatement(sql)
+	    ) {
+	        ps.setString(1, status);
+	        ps.setInt(2, orderId);
+
+	        return ps.executeUpdate() > 0;
+	    }
+	}
+	
+	@Override
+	public int getOrderCount(int userId) {
+
+	    String sql = "SELECT COUNT(*) FROM orders WHERE user_id=?";
 
 	    try (
 	        Connection con = DBConnection.getConnection();
 	        PreparedStatement ps = con.prepareStatement(sql)
 	    ) {
 
-	        ps.setString(1, status);
-	        ps.setInt(2, orderId);
+	        ps.setInt(1, userId);
 
-	        return ps.executeUpdate() > 0;
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            return rs.getInt(1);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
 	    }
+
+	    return 0;
 	}
 	
 	

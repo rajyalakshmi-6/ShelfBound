@@ -31,4 +31,8 @@ public interface CartDAO {
             int bookId,
             int quantity)
             throws Exception;
+    
+    int getCartCount(int userId);
+    
+    boolean clearCart(int userId) throws Exception;
 }

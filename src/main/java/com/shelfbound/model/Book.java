@@ -10,6 +10,7 @@ public class Book {
     private int stockQuantity;
     private String imageUrl;
     private double rating;
+    private int categoryId;  // ← ADDED
 
     // GETTERS & SETTERS
 
@@ -75,5 +76,14 @@ public class Book {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    // ← ADDED
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 }

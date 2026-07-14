@@ -110,6 +110,49 @@ body {
     border-radius: 8px;
 }
 
+/* ================= PROFILE AVATAR (initials circle / guest icon) - START ================= */
+/* 📌 REUSABLE BLOCK: copy this entire block to any other page's CSS to reuse the avatar */
+
+.profile-avatar-link {
+    display: inline-flex;
+    text-decoration: none;
+    padding: 0 !important; /* overrides the generic .nav-links a padding */
+}
+
+.profile-avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--primary-blue, #1e3a8a);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 6px rgba(30, 58, 138, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    user-select: none;
+}
+
+/* guest state — no logged-in user, just the emoji on a neutral grey circle */
+.profile-avatar-guest {
+    background: #f1f5f9;
+    font-size: 16px;
+    box-shadow: none;
+    border: 1.5px solid var(--border-light, #e2e8f0);
+}
+
+.profile-avatar-link:hover .profile-avatar {
+    transform: scale(1.08);
+    box-shadow: 0 4px 10px rgba(30, 58, 138, 0.4);
+}
+
+.profile-avatar-link:hover .profile-avatar-guest {
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+}
+/* ================= PROFILE AVATAR (initials circle / guest icon) - END ================= */
 
 /* ================= PAGE BODY ================= */
 .contact-container {
@@ -128,6 +171,35 @@ body {
     border-radius: var(--radius-lg);
     padding: 44px 48px;
     box-shadow: var(--shadow-md);
+}
+
+/* ================= LOGOUT BUTTON STYLES ================= */
+.btn-logout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    vertical-align: middle;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-logout:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+}
+
+.btn-logout svg {
+    display: block;
 }
 
 /* ── Card header ── */

@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import com.shelfbound.connection.DBConnection;
+import com.shelfbound.dao.CartDAO;
+import com.shelfbound.daoimpl.CartDAOImpl;
 import com.shelfbound.model.CartItem;
 
 import jakarta.servlet.ServletException;
@@ -57,29 +59,60 @@ public class CheckoutServlet extends HttpServlet {
                 return;
             }
 
+            // ============================================
+            // READ ALL FORM FIELDS
+            // ============================================
+            String fullName = request.getParameter("fullName");
+            String phone = request.getParameter("phone");
             String address = request.getParameter("address");
             String city = request.getParameter("city");
+            String state = request.getParameter("state");
             String pincode = request.getParameter("pincode");
+            String country = request.getParameter("country");
             String paymentMethod = request.getParameter("paymentMethod");
 
+            // Fallback defaults
+            if (fullName == null) fullName = "";
+            if (phone == null) phone = "";
             if (address == null) address = "";
             if (city == null) city = "";
+            if (state == null) state = "";
             if (pincode == null) pincode = "";
+            if (country == null) country = "India";
             if (paymentMethod == null) paymentMethod = "COD";
 
-            String shippingAddress = address + ", " + city + " - " + pincode;
+            // Build complete shipping address
+            String shippingAddress = fullName + "\n" +
+                                     phone + "\n" +
+                                     address + "\n" +
+                                     city + ", " + state + " - " + pincode + "\n" +
+                                     country;
 
-            double totalAmount = 0;
-
+            // ============================================
+            // CALCULATE TOTAL WITH DISCOUNT
+            // ============================================
+            double subtotal = 0;
             for (CartItem item : cart) {
-                totalAmount += item.getBook().getPrice() * item.getQuantity();
+                subtotal += item.getBook().getPrice() * item.getQuantity();
             }
+
+            // Check for applied coupon
+            String appliedCoupon = (String) session.getAttribute("appliedCoupon");
+            double discountPercent = 0;
+            if ("WELCOME20".equals(appliedCoupon)) {
+                discountPercent = 0.20;
+            }
+            double discountAmount = subtotal * discountPercent;
+            double totalAmount = subtotal - discountAmount;
 
             Connection con = DBConnection.getConnection();
 
+            // ============================================
+            // INSERT ORDER
+            // ============================================
             String orderSql =
-                "INSERT INTO orders (user_id, total_amount, order_status, payment_method, shipping_address) " +
-                "VALUES (?, ?, ?, ?, ?)";
+                "INSERT INTO orders (user_id, total_amount, order_status, payment_method, shipping_address, order_date, discount_amount) " +
+                "VALUES (?, ?, ?, ?, ?, NOW(), ?)";
 
             PreparedStatement ps = con.prepareStatement(orderSql,
                     PreparedStatement.RETURN_GENERATED_KEYS);
@@ -89,6 +122,7 @@ public class CheckoutServlet extends HttpServlet {
             ps.setString(3, "Pending");
             ps.setString(4, paymentMethod);
             ps.setString(5, shippingAddress);
+            ps.setDouble(6, discountAmount);
 
             ps.executeUpdate();
 
@@ -99,6 +133,9 @@ public class CheckoutServlet extends HttpServlet {
                 orderId = rs.getInt(1);
             }
 
+            // ============================================
+            // INSERT ORDER ITEMS
+            // ============================================
             String itemSql =
                 "INSERT INTO order_items (order_id, book_id, quantity, price) VALUES (?, ?, ?, ?)";
 
@@ -116,9 +153,45 @@ public class CheckoutServlet extends HttpServlet {
 
             itemPs.executeBatch();
 
-            session.removeAttribute("cart");
+            // ============================================
+            // UPDATE USER DETAILS (Save latest address)
+            // ============================================
+            String updateUserSql =
+                "UPDATE users SET phone = ?, address = ?, city = ?, state = ?, pincode = ? " +
+                "WHERE user_id = ?";
 
-            //  FIXED PATH (IMPORTANT)
+            PreparedStatement updatePs = con.prepareStatement(updateUserSql);
+            updatePs.setString(1, phone);
+            updatePs.setString(2, address);
+            updatePs.setString(3, city);
+            updatePs.setString(4, state);
+            updatePs.setString(5, pincode);
+            updatePs.setInt(6, userId);
+            updatePs.executeUpdate();
+            updatePs.close();
+
+            // ============================================
+            // ✅ CLEAR CART FROM DATABASE (NEW!)
+            // ============================================
+            CartDAO cartDAO = new CartDAOImpl();
+            cartDAO.clearCart(userId);
+
+            // ============================================
+            // CLEAR CART AND COUPON FROM SESSION
+            // ============================================
+            session.removeAttribute("cart");
+            session.removeAttribute("appliedCoupon");
+            session.removeAttribute("couponError");
+
+            // Close resources
+            itemPs.close();
+            rs.close();
+            ps.close();
+            con.close();
+
+            // ============================================
+            // REDIRECT TO SUCCESS PAGE
+            // ============================================
             response.sendRedirect(
                 request.getContextPath() + "/customer/order-success.jsp?orderId=" + orderId
             );

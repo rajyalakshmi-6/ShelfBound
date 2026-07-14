@@ -122,6 +122,34 @@
         line-height: 1.65;
     }
 
+/* ================= LOGOUT BUTTON STYLES ================= */
+.btn-logout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    margin-left: 10px;
+    vertical-align: middle;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-logout:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+    transform: scale(1.08);
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+}
+
+.btn-logout svg {
+    display: block;
+}
     /* ── Categories ── */
     .categories-grid {
         display: grid;
@@ -242,21 +270,45 @@
         <a href="<%= request.getContextPath() %>/cart">Cart</a>
         <a href="<%= request.getContextPath() %>/orders">Orders</a>
         <a href="<%= request.getContextPath() %>/wishlist">Wishlist</a>
-        <a href="<%= request.getContextPath() %>/about" class="active">About</a>
-        <a href="<%= request.getContextPath() %>/contact">Contact</a>
+        				<!-- ================= PROFILE AVATAR (initials circle / guest icon) - START ================= -->
+<!-- 📌 REUSABLE BLOCK: copy this <a class="profile-avatar-link">...</a> to any page's navbar -->
+<a href="<%= request.getContextPath() %>/profile" class="profile-avatar-link" title="<%= username != null ? username : "Profile" %>">
+    <%
+        if (username != null && !username.trim().isEmpty()) {
+            String initials = username.trim().length() >= 2
+                    ? username.trim().substring(0, 2).toUpperCase()
+                    : username.trim().substring(0, 1).toUpperCase();
+    %>
+    <div class="profile-avatar"><%= initials %></div>
+    <%
+        } else {
+    %>
+    <div class="profile-avatar profile-avatar-guest">👤</div>
+    <%
+        }
+    %>
+</a>
+<!-- ================= PROFILE AVATAR (initials circle / guest icon) - END ================= -->
 
         <%
             if (username == null) {
         %>
             <a href="<%= request.getContextPath() %>/login">Login</a>
+        <!-- ================= LOGOUT BUTTON START ================= -->
         <%
             } else {
         %>
             <span class="welcome-user">Welcome, <%= username %></span>
-            <a href="<%= request.getContextPath() %>/logout" class="btn-logout">Logout</a>
+            <a href="<%= request.getContextPath() %>/logout" class="btn-logout" title="Logout">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v10"></path>
+                    <path d="M18.36 6.64a9 9 0 1 1-12.72 0"></path>
+                </svg>
+            </a>
         <%
             }
         %>
+        <!-- ================= LOGOUT BUTTON END ================= -->
 
         <a href="<%= request.getContextPath() %>/adminLogin">Admin</a>
 

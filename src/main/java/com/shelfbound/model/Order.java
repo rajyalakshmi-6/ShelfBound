@@ -10,6 +10,8 @@ public class Order {
     private String orderDate;
     private int userId;
     private String shippingAddress;
+    private String deliveryDate;
+    private double discountAmount;
 
     private List<OrderItem> items;
 
@@ -62,5 +64,19 @@ public class Order {
     }
     public void setShippingAddress(String shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public String getDeliveryDate() {
+        return deliveryDate;
+    }
+    public void setDeliveryDate(String deliveryDate) {
+        this.deliveryDate = deliveryDate;
+    }
+
+    public double getDiscountAmount() {
+        return discountAmount;
+    }
+    public void setDiscountAmount(double discountAmount) {
+        this.discountAmount = discountAmount;
     }
 }

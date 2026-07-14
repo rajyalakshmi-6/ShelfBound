@@ -24,4 +24,7 @@ public interface UserDAO {
     // CHECK EMAIL EXISTS
     // =========================
     boolean isEmailExists(String email);
+    
+    
+    boolean updateUser(User user);
 }

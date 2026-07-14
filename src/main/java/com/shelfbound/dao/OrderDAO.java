@@ -21,4 +21,6 @@ public interface OrderDAO {
  List<Order> getAllOrders() throws Exception;
 
  boolean updateOrderStatus(int orderId, String status) throws Exception;
+ 
+ int getOrderCount(int userId);
 }

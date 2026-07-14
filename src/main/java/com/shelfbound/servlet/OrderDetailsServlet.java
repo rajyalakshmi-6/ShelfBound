@@ -26,13 +26,20 @@ public class OrderDetailsServlet extends HttpServlet {
                 return;
             }
 
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            // ── Parse orderId safely ──
+            int orderId;
+            try {
+                orderId = Integer.parseInt(request.getParameter("orderId"));
+            } catch (NumberFormatException e) {
+                response.sendRedirect(request.getContextPath() + "/orders?error=invalid");
+                return;
+            }
 
             OrderDAO dao = new OrderDAOImpl();
             Order order = dao.getOrderById(orderId, userId);
 
             if (order == null) {
-                response.sendRedirect(request.getContextPath() + "/orders");
+                response.sendRedirect(request.getContextPath() + "/orders?error=notfound");
                 return;
             }
 
@@ -43,7 +50,7 @@ public class OrderDetailsServlet extends HttpServlet {
 
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect(request.getContextPath() + "/orders");
+            response.sendRedirect(request.getContextPath() + "/orders?error=exception");
         }
     }
 }
