@@ -9,7 +9,7 @@
 ![Architecture](https://img.shields.io/badge/Architecture-MVC%20%2B%20DAO-blue)
 ![Status](https://img.shields.io/badge/Status-Actively%20Developed-brightgreen)
 
-### 🎥 [Watch the Project Demo]([https://1drv.ms/v/c/99e7c2a67d1ed93e/IQB10BIEI9R_SIQ1LuCKv30yARPwv_haHbQkobzvOF5Pg-A?e=wfwZjb](https://drive.google.com/file/d/1vZL-sO3S1cf9jhZlN2j7xfH868dBIF3k/view?usp=drivesdk))  ·  📊 [View the Project Presentation](presentation/ShelfBound.pptx)
+### 🎥 [Watch the Project Demo](https://drive.google.com/file/d/1vZL-sO3S1cf9jhZlN2j7xfH868dBIF3k/view?usp=drivesdk) · 📊 [View the Project Presentation](presentation/ShelfBound.pptx)
 
 ---
 
