@@ -16,9 +16,19 @@ import jakarta.mail.Transport;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+
 public class EmailService {
 
     private static final SecureRandom RANDOM = new SecureRandom();
+
+    private static String brevoApiKey = "";
+    private static String senderEmail = "devaralarajyalakshmi265@gmail.com";
+    private static String senderName  = "ShelfBound BookStore";
 
     private static String host = "smtp.gmail.com";
     private static String port = "587";
@@ -30,7 +40,7 @@ public class EmailService {
     }
 
     /**
-     * Loads SMTP configuration from email.properties in classpath,
+     * Loads SMTP & Brevo configuration from email.properties in classpath,
      * with fallback to System Properties and Environment Variables.
      */
     public static void loadConfig() {
@@ -38,6 +48,14 @@ public class EmailService {
             if (in != null) {
                 Properties fileProps = new Properties();
                 fileProps.load(in);
+
+                String propBrevo = fileProps.getProperty("brevo.api.key");
+                String propSenderEmail = fileProps.getProperty("brevo.sender.email");
+                String propSenderName  = fileProps.getProperty("brevo.sender.name");
+
+                if (propBrevo != null && !propBrevo.trim().isEmpty()) brevoApiKey = propBrevo.trim();
+                if (propSenderEmail != null && !propSenderEmail.trim().isEmpty()) senderEmail = propSenderEmail.trim();
+                if (propSenderName != null && !propSenderName.trim().isEmpty()) senderName = propSenderName.trim();
 
                 String propHost = fileProps.getProperty("mail.smtp.host");
                 String propPort = fileProps.getProperty("mail.smtp.port");
@@ -53,7 +71,15 @@ public class EmailService {
             System.err.println("[EmailService] Could not read email.properties from classpath: " + e.getMessage());
         }
 
-        // Environment Variables override file configuration
+        // Brevo Environment Variables
+        if (System.getenv("BREVO_API_KEY") != null && !System.getenv("BREVO_API_KEY").trim().isEmpty()) {
+            brevoApiKey = System.getenv("BREVO_API_KEY").trim();
+        }
+        if (System.getenv("BREVO_SENDER_EMAIL") != null && !System.getenv("BREVO_SENDER_EMAIL").trim().isEmpty()) {
+            senderEmail = System.getenv("BREVO_SENDER_EMAIL").trim();
+        }
+
+        // SMTP Environment Variables override file configuration
         if (System.getenv("SMTP_USER") != null && !System.getenv("SMTP_USER").trim().isEmpty()) {
             user = System.getenv("SMTP_USER").trim();
         } else if (user.isEmpty() && System.getProperty("mail.smtp.user") != null) {
@@ -77,11 +103,13 @@ public class EmailService {
     }
 
     /**
-     * Checks if actual SMTP credentials have been configured.
+     * Checks if actual Brevo API or SMTP credentials have been configured.
      */
     public static boolean isConfigured() {
-        return user != null && !user.trim().isEmpty() && !user.contains("YOUR_EMAIL")
+        boolean brevoOk = brevoApiKey != null && !brevoApiKey.trim().isEmpty() && !brevoApiKey.contains("YOUR_KEY");
+        boolean smtpOk  = user != null && !user.trim().isEmpty() && !user.contains("YOUR_EMAIL")
                 && pass != null && !pass.trim().isEmpty() && !pass.contains("YOUR_16_CHAR");
+        return brevoOk || smtpOk;
     }
 
     /**
@@ -93,7 +121,116 @@ public class EmailService {
     }
 
     /**
+     * Escapes a string for inclusion into a JSON literal, enclosing it in double quotes.
+     */
+    private static String toJsonString(String s) {
+        if (s == null) return "null";
+        StringBuilder sb = new StringBuilder("\"");
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '"':  sb.append("\\\""); break;
+                case '\\': sb.append("\\\\"); break;
+                case '\b': sb.append("\\b"); break;
+                case '\f': sb.append("\\f"); break;
+                case '\n': sb.append("\\n"); break;
+                case '\r': sb.append("\\r"); break;
+                case '\t': sb.append("\\t"); break;
+                default:
+                    if (c < ' ') {
+                        sb.append(String.format("\\u%04x", (int) c));
+                    } else {
+                        sb.append(c);
+                    }
+            }
+        }
+        sb.append("\"");
+        return sb.toString();
+    }
+
+    /**
+     * Sends email via Brevo REST API over HTTPS (Port 443).
+     * Render and cloud hosts never block port 443.
+     */
+    private static boolean sendViaBrevoApi(String toEmail, String subject, String htmlBody) {
+        try {
+            String payload = "{"
+                + "\"sender\":{\"name\":" + toJsonString(senderName) + ",\"email\":" + toJsonString(senderEmail) + "},"
+                + "\"to\":[{\"email\":" + toJsonString(toEmail) + "}],"
+                + "\"subject\":" + toJsonString(subject) + ","
+                + "\"htmlContent\":" + toJsonString(htmlBody)
+                + "}";
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api.brevo.com/v3/smtp/email"))
+                    .header("accept", "application/json")
+                    .header("api-key", brevoApiKey)
+                    .header("content-type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 200 && response.statusCode() < 300) {
+                System.out.println("✔ [EmailService] Email successfully delivered via Brevo HTTPS API to: " + toEmail + " | Subject: " + subject);
+                return true;
+            } else {
+                System.err.println("❌ [EmailService] Brevo API error (HTTP " + response.statusCode() + "): " + response.body());
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("❌ [EmailService] Brevo HTTP request failed for " + toEmail + ": " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Sends email via standard Jakarta Mail SMTP.
+     */
+    private static boolean sendViaSmtp(String toEmail, String subject, String htmlBody) {
+        if (user == null || user.trim().isEmpty() || pass == null || pass.trim().isEmpty()) {
+            System.err.println("❌ [EmailService] SMTP credentials not available for fallback.");
+            return false;
+        }
+        try {
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", host);
+            props.put("mail.smtp.port", port);
+            props.put("mail.smtp.ssl.protocols", "TLSv1.2 TLSv1.3");
+            props.put("mail.smtp.connectiontimeout", "10000");
+            props.put("mail.smtp.timeout", "10000");
+            props.put("mail.smtp.writetimeout", "10000");
+
+            Session mailSession = Session.getInstance(props, new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(user, pass);
+                }
+            });
+
+            MimeMessage message = new MimeMessage(mailSession);
+            message.setFrom(new InternetAddress(user, "ShelfBound BookStore"));
+            message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setSubject(subject, "UTF-8");
+            message.setContent(htmlBody, "text/html; charset=UTF-8");
+
+            Transport.send(message);
+            System.out.println("✔ [EmailService] Email successfully delivered via SMTP to: " + toEmail + " | Subject: " + subject);
+            return true;
+        } catch (Exception e) {
+            System.err.println("❌ [EmailService] SMTP delivery failed to " + toEmail + ": " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * Low-level HTML email dispatcher with optional async execution.
+     * Uses Brevo API if configured, otherwise falls back to SMTP.
      */
     public static boolean sendHtmlEmail(String toEmail, String subject, String htmlBody, boolean async) {
         if (!isConfigured()) {
@@ -101,41 +238,17 @@ public class EmailService {
         }
 
         if (!isConfigured()) {
-            System.out.println("ℹ [EmailService] SMTP not configured. Skipped sending email to " + toEmail + " (" + subject + ")");
+            System.out.println("ℹ [EmailService] Neither Brevo API nor SMTP configured. Skipped sending email to " + toEmail + " (" + subject + ")");
             return true;
         }
 
         Runnable sendTask = () -> {
-            try {
-                Properties props = new Properties();
-                props.put("mail.smtp.auth", "true");
-                props.put("mail.smtp.starttls.enable", "true");
-                props.put("mail.smtp.host", host);
-                props.put("mail.smtp.port", port);
-                props.put("mail.smtp.ssl.protocols", "TLSv1.2 TLSv1.3");
-                props.put("mail.smtp.connectiontimeout", "10000");
-                props.put("mail.smtp.timeout", "10000");
-                props.put("mail.smtp.writetimeout", "10000");
-
-                Session mailSession = Session.getInstance(props, new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(user, pass);
-                    }
-                });
-
-                MimeMessage message = new MimeMessage(mailSession);
-                message.setFrom(new InternetAddress(user, "ShelfBound BookStore"));
-                message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
-                message.setSubject(subject, "UTF-8");
-                message.setContent(htmlBody, "text/html; charset=UTF-8");
-
-                Transport.send(message);
-                System.out.println("✔ [EmailService] Email successfully delivered to: " + toEmail + " | Subject: " + subject);
-            } catch (Exception e) {
-                System.err.println("❌ [EmailService] Delivery failed to " + toEmail + ": " + e.getMessage());
-                e.printStackTrace();
+            if (brevoApiKey != null && !brevoApiKey.trim().isEmpty()) {
+                boolean sent = sendViaBrevoApi(toEmail, subject, htmlBody);
+                if (sent) return;
+                System.out.println("⚠ [EmailService] Brevo delivery failed, attempting fallback to SMTP...");
             }
+            sendViaSmtp(toEmail, subject, htmlBody);
         };
 
         if (async) {

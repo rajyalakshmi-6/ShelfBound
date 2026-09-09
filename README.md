@@ -8,8 +8,9 @@
 ![Maven](https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven&logoColor=white)
 ![Architecture](https://img.shields.io/badge/Architecture-MVC%20%2B%20DAO-blue)
 ![Status](https://img.shields.io/badge/Status-Actively%20Developed-brightgreen)
+![Deployment](https://img.shields.io/badge/Deployment-Render%20Live-46E3B7?logo=render&logoColor=white)
 
-### 🎥 [Watch the Project Demo](https://drive.google.com/file/d/1vZL-sO3S1cf9jhZlN2j7xfH868dBIF3k/view?usp=drivesdk) · 📊 [View the Project Presentation](presentation/ShelfBound.pptx)
+### 🌐 [Explore Live Application](https://shelfbound-bookstore.onrender.com) · 🎥 [Watch the Project Demo](https://drive.google.com/file/d/1vZL-sO3S1cf9jhZlN2j7xfH868dBIF3k/view?usp=drivesdk) · 📊 [View the Project Presentation](presentation/ShelfBound.pptx)
 
 ---
 
