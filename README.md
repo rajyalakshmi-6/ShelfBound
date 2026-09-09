@@ -10,7 +10,7 @@
 ![Status](https://img.shields.io/badge/Status-Actively%20Developed-brightgreen)
 ![Deployment](https://img.shields.io/badge/Deployment-Render%20Live-46E3B7?logo=render&logoColor=white)
 
-### 🌐 [Explore Live Application](https://shelfbound-bookstore.onrender.com) · 🎥 [Watch the Project Demo](https://drive.google.com/file/d/1vZL-sO3S1cf9jhZlN2j7xfH868dBIF3k/view?usp=drivesdk) · 📊 [View the Project Presentation](presentation/ShelfBound.pptx)
+### 🌐 [Explore Live Application](https://shelfbound-bookstore.onrender.com) · 📘 [Production Architecture & Cloud Guide](PRODUCTION_ARCHITECTURE_GUIDE.md) · 🎥 [Watch Demo](https://drive.google.com/file/d/1vZL-sO3S1cf9jhZlN2j7xfH868dBIF3k/view?usp=drivesdk) · 📊 [Presentation](presentation/ShelfBound.pptx)
 
 ---
 
@@ -304,6 +304,7 @@ ShelfBound dispatches HTML emails directly to user inboxes over Brevo's HTTPS AP
 
 ### 🛒 Shopping Cart & Dynamic Coupon Engine
 ![Cart Page](screenshots/cart-page.png)
+![All Offers & Coupons Modal](screenshots/cart-offers-modal.png)
 
 ### 💳 Checkout & Shipping Address
 ![Checkout Page 1](screenshots/checkout-page-1.png)
