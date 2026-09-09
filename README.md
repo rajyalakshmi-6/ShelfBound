@@ -271,8 +271,27 @@ All application architecture, database design, business logic, integration, test
 ![Forgot Password](screenshots/forgot-password-page.png)
 ![Reset Password](screenshots/reset-password-page.png)
 
-### 📧 Automated Email Notifications Proof (Real Gmail Inbox)
-![Email Notifications Proof](screenshots/email-proof-notifications.png)
+### 📧 Automated Real-Time Email Proof (Live Inbox Delivery)
+
+ShelfBound dispatches HTML emails directly to user inboxes over Brevo's HTTPS API. Here is the visual proof from a real Gmail inbox:
+
+#### 1. Account Registration OTP Verification Code
+![Registration OTP Email](screenshots/email-otp-verification.png)
+
+#### 2. Newsletter Welcome Gift with `WELCOME20` Coupon
+![Newsletter Welcome Email](screenshots/email-newsletter-welcome.png)
+
+#### 3. Itemized Order Confirmation & Receipt
+![Order Confirmation Receipt Email](screenshots/email-order-confirmation.png)
+
+#### 4. Live Order Status Updates (Shipped / Delivered)
+![Order Status Update Email](screenshots/email-order-status-update.png)
+
+#### 5. Self-Serve Password Reset Verification
+![Password Reset Email](screenshots/email-password-reset.png)
+
+#### 6. Customer Support Admin Direct Reply
+![Support Inquiry Response Email](screenshots/email-support-reply.png)
 
 ### 📚 Books Catalog & Filtering
 ![Books Page](screenshots/books-page.png)
