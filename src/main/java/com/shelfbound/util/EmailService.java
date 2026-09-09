@@ -167,7 +167,10 @@ public class EmailService {
                 + "\"htmlContent\":" + toJsonString(htmlBody)
                 + "}";
 
-            String cleanKey = (brevoApiKey != null) ? brevoApiKey.replaceAll("\\s+", "") : "";
+            String cleanKey = (brevoApiKey != null) ? brevoApiKey.replaceAll("[^a-zA-Z0-9\\-_]", "") : "";
+            System.out.println("ℹ [EmailService] Brevo Key Diagnostic -> Length: " + cleanKey.length()
+                + " (expected 89) | Prefix: " + (cleanKey.length() >= 8 ? cleanKey.substring(0, 8) : cleanKey)
+                + "... | Suffix: ..." + (cleanKey.length() >= 6 ? cleanKey.substring(cleanKey.length() - 6) : cleanKey));
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
