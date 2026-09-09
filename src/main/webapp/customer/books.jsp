@@ -252,10 +252,23 @@
                         </button>
                     </div>
 
-                    <p class="price">
-                        &#8377; <%= b.getPrice() %>
-                        <span class="original">&#8377; <%= String.format("%.0f", b.getPrice() * 1.25) %></span>
-                    </p>
+                    <div class="card-bottom-row">
+                        <p class="price">
+                            &#8377; <%= b.getPrice() %>
+                            <span class="original">&#8377; <%= String.format("%.0f", b.getPrice() * 1.25) %></span>
+                        </p>
+                        <button type="button"
+                                class="card-cart-btn"
+                                data-book-id="<%= b.getBookId() %>"
+                                title="Add to Cart"
+                                onclick="quickAddToCart(this, event, <%= b.getBookId() %>, '<%= b.getTitle().replace("'", "\\'").replace("\"", "&quot;") %>')">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="9" cy="21" r="1"></circle>
+                                <circle cx="20" cy="21" r="1"></circle>
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                            </svg>
+                        </button>
+                    </div>
 
                 </div>
             </a>
@@ -382,6 +395,66 @@ function toggleWishlist(btn, event) {
         }
         btn.disabled = false;
         showToast('Something went wrong. Please try again.', 'error');
+    });
+}
+
+// ===== QUICK ADD TO CART =====
+function quickAddToCart(btn, event, bookId, title) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (btn.disabled) return;
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+
+    fetch('<%= request.getContextPath() %>/cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        },
+        body: 'bookId=' + encodeURIComponent(bookId) + '&quantity=1'
+    })
+    .then(function(res) {
+        if (res.status === 401) {
+            return res.json().then(function(data) {
+                showToast(data.message || 'Please login to add to cart.', 'info');
+                setTimeout(function() {
+                    window.location.href = '<%= request.getContextPath() %>/login';
+                }, 1200);
+            });
+        }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+    })
+    .then(function(data) {
+        if (!data) return;
+        if (data.success) {
+            btn.classList.add('added');
+            btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            showToast('✔ Added "' + (title || 'Book') + '" to Cart! 🛒', 'success');
+
+            setTimeout(function() {
+                btn.classList.remove('added');
+                btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }, 1200);
+        } else {
+            showToast(data.message || 'Could not add to cart.', 'error');
+            btn.disabled = false;
+            btn.style.opacity = '1';
+        }
+    })
+    .catch(function(err) {
+        console.error('Quick add to cart error:', err);
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        showToast('Please login to add books to cart.', 'info');
+        setTimeout(function() {
+            window.location.href = '<%= request.getContextPath() %>/login';
+        }, 1200);
     });
 }
 

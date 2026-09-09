@@ -101,7 +101,11 @@ html { scroll-behavior: smooth; }
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 200px);
+    background: 
+        radial-gradient(1200px circle at 10% 10%, rgba(30, 58, 138, 0.06), transparent 40%),
+        radial-gradient(1000px circle at 90% 20%, rgba(255, 122, 0, 0.05), transparent 40%),
+        radial-gradient(800px circle at 50% 80%, rgba(30, 58, 138, 0.04), transparent 50%),
+        #f8fafc;
     min-height: 100vh;
     color: var(--text-dark);
     -webkit-font-smoothing: antialiased;
@@ -109,48 +113,42 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   NAVBAR
+   NAVBAR (SMOKY GLASS)
    ═══════════════════════════════════════════════════════════════ */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 40px;
-    background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
-    border-bottom: 1px solid #bae6fd;
+    padding: 14px 44px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px) saturate(190%);
+    -webkit-backdrop-filter: blur(20px) saturate(190%);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.85);
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: var(--shadow-sm);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 0 16px rgba(255, 122, 0, 0.03);
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .logo-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0;
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
-.logo-container:hover { transform: scale(1.02); }
-
-.logo-img {
-    height: 32px;
-    width: auto;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(30,58,138,0.15));
-}
+.logo-container:hover { opacity: 0.95; }
+.logo-img { height: 32px; width: auto; object-fit: contain; }
 
 .logo {
-    font-size: 26px;
+    font-size: 28px;
     font-weight: 800;
     letter-spacing: -0.5px;
     display: flex;
     align-items: center;
     line-height: 1;
 }
-
 .logo-shelf { color: var(--accent-orange); }
 .logo-bound { color: var(--primary-blue); }
 
@@ -164,50 +162,35 @@ body {
 .nav-links a {
     text-decoration: none;
     color: var(--text-muted);
-    font-weight: 500;
+    font-weight: 600;
     font-size: 14px;
-    padding: 8px 14px;
-    border-radius: var(--radius-sm);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    padding: 8px 16px;
+    border-radius: 999px;
+    transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
 }
-
-.nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: var(--primary-blue);
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    transform: translateX(-50%);
-    border-radius: 2px;
-}
-
 .nav-links a:hover {
     color: var(--primary-blue);
     background: rgba(30, 58, 138, 0.06);
+    border-color: rgba(30, 58, 138, 0.12);
+    transform: translateY(-1px);
 }
-
-.nav-links a:hover::after { width: 60%; }
-
 .nav-links a.active {
     color: var(--primary-blue);
-    background: rgba(30, 58, 138, 0.08);
-    font-weight: 600;
+    background: rgba(30, 58, 138, 0.09);
+    border-color: rgba(30, 58, 138, 0.18);
+    box-shadow: inset 0 1px 2px rgba(30, 58, 138, 0.08);
 }
 
 .welcome-user {
     color: var(--primary-blue);
-    font-weight: 600;
-    font-size: 14px;
-    padding: 8px 14px;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 16px;
     background: rgba(30, 58, 138, 0.06);
-    border-radius: var(--radius-sm);
-    border: 1px solid rgba(30, 58, 138, 0.08);
+    border: 1px solid rgba(30, 58, 138, 0.12);
+    border-radius: 999px;
 }
-
 
 /* ================= LOGOUT BUTTON STYLES ================= */
 .btn-logout {
@@ -217,13 +200,13 @@ body {
     width: 42px;
     height: 42px;
     border-radius: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
+    background: rgba(30, 58, 138, 0.08);
+    color: var(--primary-blue);
     font-size: 16px;
     transition: all 0.3s ease;
     margin-left: 10px;
     vertical-align: middle;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(30, 58, 138, 0.15);
 }
 
 .btn-logout:hover {
@@ -243,15 +226,14 @@ body {
     display: inline-flex;
     text-decoration: none;
     padding: 0 !important;
+    border: none !important;
 }
-
-.profile-avatar-link::after { display: none !important; }
 
 .profile-avatar {
     width: 36px;
     height: 36px;
-    border-radius: var(--radius-full);
-    background: linear-gradient(135deg, var(--primary-blue), var(--primary-blue-light));
+    border-radius: 50%;
+    background: var(--primary-blue);
     color: #ffffff;
     display: flex;
     align-items: center;
@@ -259,28 +241,21 @@ body {
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.3px;
-    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.25);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
     user-select: none;
-    border: 2px solid rgba(255,255,255,0.3);
 }
 
 .profile-avatar-guest {
-    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
-    color: var(--text-muted);
+    background: #f1f5f9;
     font-size: 16px;
     box-shadow: none;
-    border: 2px solid var(--border-light);
+    border: 1.5px solid var(--border-light);
 }
 
 .profile-avatar-link:hover .profile-avatar {
-    transform: scale(1.1) rotate(5deg);
-    box-shadow: 0 4px 14px rgba(30, 58, 138, 0.35);
-}
-
-.profile-avatar-link:hover .profile-avatar-guest {
-    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
-    transform: scale(1.1);
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.4);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -332,22 +307,24 @@ body {
     gap: 8px;
     text-decoration: none;
     color: var(--primary-blue);
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 600;
-    padding: 10px 20px;
-    border: 1.5px solid #bfdbfe;
+    padding: 10px 18px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
     border-radius: var(--radius-md);
-    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
     margin-bottom: 28px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: var(--shadow-sm);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .back-btn:hover {
-    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-    border-color: #93c5fd;
-    transform: translateX(-4px);
-    box-shadow: var(--shadow-md);
+    background: #ffffff;
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+    transform: translateX(-3px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
 }
 
 .back-btn svg {
@@ -1692,7 +1669,7 @@ body {
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
                             Download Invoice
                         </button>
-                        <a href="<%= request.getContextPath() %>/orders" class="btn btn-secondary">
+                        <a href="<%= request.getContextPath() %>/books" class="btn btn-secondary">
                             <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                             Reorder Items
                         </a>

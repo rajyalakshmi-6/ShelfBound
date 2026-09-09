@@ -310,6 +310,90 @@
 
 
     <!-- ========================= -->
+    <!-- OTP VERIFICATION SERVLET  -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>VerifyOtpServlet</servlet-name>
+        <servlet-class>com.shelfbound.servlet.VerifyOtpServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>VerifyOtpServlet</servlet-name>
+        <url-pattern>/verifyOtp</url-pattern>
+    </servlet-mapping>
+
+    <!-- ========================= -->
+    <!-- FORGOT PASSWORD SERVLET   -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <servlet-class>com.shelfbound.servlet.ForgotPasswordServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ForgotPasswordServlet</servlet-name>
+        <url-pattern>/forgotPassword</url-pattern>
+    </servlet-mapping>
+
+    <!-- ========================= -->
+    <!-- RESET PASSWORD SERVLET    -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <servlet-class>com.shelfbound.servlet.ResetPasswordServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ResetPasswordServlet</servlet-name>
+        <url-pattern>/resetPassword</url-pattern>
+    </servlet-mapping>
+
+    <!-- ========================= -->
+    <!-- SUBSCRIBE SERVLET         -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>SubscribeServlet</servlet-name>
+        <servlet-class>com.shelfbound.servlet.SubscribeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SubscribeServlet</servlet-name>
+        <url-pattern>/subscribe</url-pattern>
+    </servlet-mapping>
+
+    <!-- ========================= -->
+    <!-- ADMIN USER SERVLET        -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>AdminUserServlet</servlet-name>
+        <servlet-class>com.shelfbound.servlet.admin.AdminUserServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AdminUserServlet</servlet-name>
+        <url-pattern>/adminUser</url-pattern>
+    </servlet-mapping>
+
+    <!-- ========================= -->
+    <!-- ADMIN OFFER SERVLET       -->
+    <!-- ========================= -->
+
+    <servlet>
+        <servlet-name>AdminOfferServlet</servlet-name>
+        <servlet-class>com.shelfbound.servlet.admin.AdminOfferServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AdminOfferServlet</servlet-name>
+        <url-pattern>/adminOffer</url-pattern>
+    </servlet-mapping>
+
+    <!-- ========================= -->
     <!-- DEFAULT WELCOME PAGE -->
     <!-- ========================= -->
 

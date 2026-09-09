@@ -4,12 +4,17 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.shelfbound.connection.DBConnection;
 import com.shelfbound.dao.CartDAO;
+import com.shelfbound.dao.UserDAO;
 import com.shelfbound.daoimpl.CartDAOImpl;
+import com.shelfbound.daoimpl.UserDAOImpl;
 import com.shelfbound.model.CartItem;
+import com.shelfbound.model.User;
+import com.shelfbound.util.EmailService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -99,8 +104,17 @@ public class CheckoutServlet extends HttpServlet {
             // Check for applied coupon
             String appliedCoupon = (String) session.getAttribute("appliedCoupon");
             double discountPercent = 0;
-            if ("WELCOME20".equals(appliedCoupon)) {
-                discountPercent = 0.20;
+            if (appliedCoupon != null && !appliedCoupon.trim().isEmpty()) {
+                Double sessionPercent = (Double) session.getAttribute("couponDiscountPercent");
+                if (sessionPercent != null && sessionPercent > 0) {
+                    discountPercent = sessionPercent;
+                } else {
+                    com.shelfbound.dao.OfferDAO offerDAO = new com.shelfbound.daoimpl.OfferDAOImpl();
+                    com.shelfbound.model.Offer offer = offerDAO.getOfferByCode(appliedCoupon);
+                    if (offer != null && offer.isActive() && subtotal >= offer.getMinOrderAmount()) {
+                        discountPercent = offer.getDiscountPercentage() / 100.0;
+                    }
+                }
             }
             double discountAmount = subtotal * discountPercent;
             double totalAmount = subtotal - discountAmount;
@@ -177,10 +191,36 @@ public class CheckoutServlet extends HttpServlet {
             cartDAO.clearCart(userId);
 
             // ============================================
+            // SEND EMAIL NOTIFICATION (REAL EMAIL)
+            // ============================================
+            try {
+                UserDAO userDAO = new UserDAOImpl();
+                User customer = userDAO.getUserById(userId);
+                String customerEmail = (customer != null) ? customer.getEmail() : null;
+                String customerName = (fullName != null && !fullName.trim().isEmpty()) ? fullName : 
+                                      ((customer != null) ? customer.getUsername() : "Customer");
+
+                if (customerEmail != null && !customerEmail.trim().isEmpty()) {
+                    EmailService.sendOrderConfirmation(
+                        customerEmail,
+                        customerName,
+                        orderId,
+                        totalAmount,
+                        paymentMethod,
+                        shippingAddress,
+                        new ArrayList<>(cart)
+                    );
+                }
+            } catch (Exception mailEx) {
+                System.err.println("[CheckoutServlet] Failed to dispatch order confirmation email: " + mailEx.getMessage());
+            }
+
+            // ============================================
             // CLEAR CART AND COUPON FROM SESSION
             // ============================================
             session.removeAttribute("cart");
             session.removeAttribute("appliedCoupon");
+            session.removeAttribute("couponDiscountPercent");
             session.removeAttribute("couponError");
 
             // Close resources

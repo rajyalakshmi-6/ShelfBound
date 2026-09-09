@@ -1,5 +1,6 @@
 package com.shelfbound.dao;
 
+import java.util.List;
 import com.shelfbound.model.User;
 
 public interface UserDAO {
@@ -26,5 +27,19 @@ public interface UserDAO {
     boolean isEmailExists(String email);
     
     
-    boolean updateUser(User user);
+    boolean updateUser(User user);  // for profile data updation
+    
+    // =========================
+    // UPDATE PASSWORD (FORGOT PASSWORD)
+    // =========================
+    boolean updatePassword(String email, String newPassword);
+
+    // =========================
+    // USER MANAGEMENT & BLOCKING
+    // =========================
+    List<User> getAllUsers();
+
+    boolean updateUserStatus(int userId, String status);
+
+    User getUserById(int userId);
 }

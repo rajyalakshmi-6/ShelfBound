@@ -258,10 +258,23 @@
                         &#9829;
                     </button>
                 </div>
-                <p class="price">
-                    &#8377; <%= b.getPrice() %>
-                    <span class="original">&#8377; <%= String.format("%.0f", b.getPrice() * 1.25) %></span>
-                </p>
+                <div class="card-bottom-row">
+                    <p class="price">
+                        &#8377; <%= b.getPrice() %>
+                        <span class="original">&#8377; <%= String.format("%.0f", b.getPrice() * 1.25) %></span>
+                    </p>
+                    <button type="button"
+                            class="card-cart-btn"
+                            data-book-id="<%= b.getBookId() %>"
+                            title="Add to Cart"
+                            onclick="quickAddToCart(this, event, <%= b.getBookId() %>, '<%= b.getTitle().replace("'", "\\'").replace("\"", "&quot;") %>')">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </a>
         <%
@@ -303,10 +316,23 @@
                         &#9829;
                     </button>
                 </div>
-                <p class="price">
-                    &#8377; <%= b.getPrice() %>
-                    <span class="original">&#8377; <%= String.format("%.0f", b.getPrice() * 1.25) %></span>
-                </p>
+                <div class="card-bottom-row">
+                    <p class="price">
+                        &#8377; <%= b.getPrice() %>
+                        <span class="original">&#8377; <%= String.format("%.0f", b.getPrice() * 1.25) %></span>
+                    </p>
+                    <button type="button"
+                            class="card-cart-btn"
+                            data-book-id="<%= b.getBookId() %>"
+                            title="Add to Cart"
+                            onclick="quickAddToCart(this, event, <%= b.getBookId() %>, '<%= b.getTitle().replace("'", "\\'").replace("\"", "&quot;") %>')">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </a>
         <%
@@ -348,10 +374,23 @@
                         &#9829;
                     </button>
                 </div>
-                <p class="price">
-                    &#8377; <%= b.getPrice() %>
-                    <span class="original">&#8377; <%= String.format("%.0f", b.getPrice() * 1.25) %></span>
-                </p>
+                <div class="card-bottom-row">
+                    <p class="price">
+                        &#8377; <%= b.getPrice() %>
+                        <span class="original">&#8377; <%= String.format("%.0f", b.getPrice() * 1.25) %></span>
+                    </p>
+                    <button type="button"
+                            class="card-cart-btn"
+                            data-book-id="<%= b.getBookId() %>"
+                            title="Add to Cart"
+                            onclick="quickAddToCart(this, event, <%= b.getBookId() %>, '<%= b.getTitle().replace("'", "\\'").replace("\"", "&quot;") %>')">
+                        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
         </a>
         <%
@@ -600,6 +639,66 @@ function toggleWishlist(btn, event) {
     });
 }
 
+// ===== QUICK ADD TO CART =====
+function quickAddToCart(btn, event, bookId, title) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (btn.disabled) return;
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+
+    fetch('<%= request.getContextPath() %>/cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        },
+        body: 'bookId=' + encodeURIComponent(bookId) + '&quantity=1'
+    })
+    .then(function(res) {
+        if (res.status === 401) {
+            return res.json().then(function(data) {
+                showToast(data.message || 'Please login to add to cart.', 'info');
+                setTimeout(function() {
+                    window.location.href = '<%= request.getContextPath() %>/login';
+                }, 1200);
+            });
+        }
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+    })
+    .then(function(data) {
+        if (!data) return;
+        if (data.success) {
+            btn.classList.add('added');
+            btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+            showToast('✔ Added "' + (title || 'Book') + '" to Cart! 🛒', 'success');
+
+            setTimeout(function() {
+                btn.classList.remove('added');
+                btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+            }, 1200);
+        } else {
+            showToast(data.message || 'Could not add to cart.', 'error');
+            btn.disabled = false;
+            btn.style.opacity = '1';
+        }
+    })
+    .catch(function(err) {
+        console.error('Quick add to cart error:', err);
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        showToast('Please login to add books to cart.', 'info');
+        setTimeout(function() {
+            window.location.href = '<%= request.getContextPath() %>/login';
+        }, 1200);
+    });
+}
+
 // ===== TOAST NOTIFICATIONS =====
 function showToast(message, type) {
     var container = document.getElementById('toastContainer');
@@ -631,17 +730,60 @@ function handleSubscribe(e) {
     e.preventDefault();
     var btn = document.getElementById('subscribeBtn');
     var input = document.getElementById('newsletterEmail');
+    var emailVal = input.value.trim();
 
-    btn.textContent = 'Subscribed!';
-    btn.classList.add('subscribed');
+    if (!emailVal) return;
 
-    input.value = '';
+    btn.disabled = true;
+    btn.textContent = 'Subscribing...';
 
-    setTimeout(function() {
-        btn.textContent = 'Subscribe';
-        btn.classList.remove('subscribed');
-    }, 3000);
+    fetch('<%= request.getContextPath() %>/subscribe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: 'email=' + encodeURIComponent(emailVal)
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+        if (data.status === 'success') {
+            btn.textContent = 'Subscribed! ✔';
+            btn.classList.add('subscribed');
+            input.value = '';
+            showToast('Welcome email with 20% discount coupon sent! ✉️', 'success');
+        } else {
+            btn.textContent = 'Subscribe';
+            showToast(data.message || 'Subscription failed.', 'error');
+        }
+    })
+    .catch(function(err) {
+        console.error('Subscription error:', err);
+        btn.textContent = 'Subscribed! ✔';
+        input.value = '';
+        showToast('Subscribed! Check your inbox for updates.', 'success');
+    })
+    .finally(function() {
+        setTimeout(function() {
+            btn.disabled = false;
+            btn.textContent = 'Subscribe';
+            btn.classList.remove('subscribed');
+        }, 4000);
+    });
 }
+
+// Productivity shortcut: Press '/' or 'Ctrl+K' to quickly focus search
+document.addEventListener('keydown', function(e) {
+    if ((e.key === '/' || (e.ctrlKey && e.key.toLowerCase() === 'k')) && 
+        document.activeElement.tagName !== 'INPUT' && 
+        document.activeElement.tagName !== 'TEXTAREA') {
+        e.preventDefault();
+        var searchBox = document.getElementById("searchBox");
+        if (searchBox) {
+            searchBox.focus();
+            searchBox.select();
+        }
+    }
+});
 </script>
 
 </body>

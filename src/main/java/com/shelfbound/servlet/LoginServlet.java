@@ -12,11 +12,14 @@ import java.util.List;
 import com.shelfbound.connection.DBConnection;
 import com.shelfbound.dao.BookDAO;
 import com.shelfbound.dao.CartDAO;
+import com.shelfbound.dao.UserDAO;
 import com.shelfbound.daoimpl.BookDAOImpl;
 import com.shelfbound.daoimpl.CartDAOImpl;
+import com.shelfbound.daoimpl.UserDAOImpl;
 import com.shelfbound.model.Book;
 import com.shelfbound.model.Cart;
 import com.shelfbound.model.CartItem;
+import com.shelfbound.util.PasswordUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -40,7 +43,7 @@ public class LoginServlet extends HttpServlet {
                .forward(request, response);
     }
 
-    // =========================
+ // =========================
     // LOGIN PROCESS
     // =========================
     @Override
@@ -85,94 +88,133 @@ public class LoginServlet extends HttpServlet {
             con = DBConnection.getConnection();
 
             // =========================
-            // CHECK LOGIN
+            // CHECK IF EMAIL EXISTS
             // =========================
             String sql =
-                "SELECT *\r\n"
-                + "FROM users\r\n"
-                + "WHERE email=? AND password=?";
+                "SELECT * FROM users WHERE email=?";
 
             ps = con.prepareStatement(sql);
-
             ps.setString(1, email);
-            ps.setString(2, password);
 
             rs = ps.executeQuery();
 
-            // =========================
-            // LOGIN SUCCESS
-            // =========================
             if (rs.next()) {
-            	
-            	User user = new User();
-            	
 
-            	user.setUserId(rs.getInt("user_id"));
-            	user.setUsername(rs.getString("username"));
-            	user.setEmail(rs.getString("email"));
-            	user.setPhone(rs.getString("phone"));
-            	user.setAddress(rs.getString("address"));
-            	user.setCity(rs.getString("city"));
-            	user.setState(rs.getString("state"));
-            	user.setPincode(rs.getString("pincode"));
-            	
-            	int userId = user.getUserId();
+                // =========================
+                // EMAIL EXISTS - CHECK PASSWORD (BCRYPT + LEGACY COMPATIBLE)
+                // =========================
+                String dbPassword = rs.getString("password");
 
-            	String dbUsername = user.getUsername();
+                if (!PasswordUtil.checkPassword(password, dbPassword)) {
+
+                    request.setAttribute(
+                        "errorMessage",
+                        "Incorrect password."
+                    );
+
+                    request.getRequestDispatcher(
+                        "/customer/login.jsp"
+                    ).forward(request, response);
+
+                    return;
+                }
+
+                // Seamless Auto-Upgrade: if password was legacy plain-text, convert to BCrypt in MySQL
+                if (!PasswordUtil.isBcryptHash(dbPassword)) {
+                    try {
+                        UserDAO udao = new UserDAOImpl();
+                        udao.updatePassword(email, password);
+                        System.out.println("✔ [LoginServlet] Auto-upgraded password for " + email + " to BCrypt hash in MySQL.");
+                    } catch (Exception ex) {
+                        System.err.println("Notice: Could not auto-upgrade password to BCrypt: " + ex.getMessage());
+                    }
+                }
+
+                // =========================
+                // CHECK IF ACCOUNT IS BLOCKED
+                // =========================
+                String status = rs.getString("status");
+                if ("BLOCKED".equalsIgnoreCase(status)) {
+                    request.setAttribute(
+                        "errorMessage",
+                        "Your account has been blocked by the administrator. Please contact support."
+                    );
+                    request.getRequestDispatcher("/customer/login.jsp").forward(request, response);
+                    return;
+                }
+
+                // =========================
+                // LOGIN SUCCESS
+                // =========================
+                User user = new User();
+
+                user.setUserId(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setAddress(rs.getString("address"));
+                user.setCity(rs.getString("city"));
+                user.setState(rs.getString("state"));
+                user.setPincode(rs.getString("pincode"));
+                user.setStatus(status != null ? status : "ACTIVE");
+
+                int userId = user.getUserId();
+
+                String dbUsername = user.getUsername();
 
                 // CREATE SESSION
                 HttpSession session = request.getSession();
 
-                session.setAttribute("userId",userId);
+                session.setAttribute("userId", userId);
 
                 session.setAttribute(
                     "username",
                     dbUsername
                 );
-             // NEW
+                // NEW
                 session.setAttribute("loggedUser", user);
 
-                
-             // =========================
-             // LOAD CART FROM DATABASE
-             // =========================
 
-             CartDAO cartDAO =
-                     new CartDAOImpl();
+                // =========================
+                // LOAD CART FROM DATABASE
+                // =========================
 
-             BookDAO bookDAO =
-                     new BookDAOImpl();
+                CartDAO cartDAO =
+                        new CartDAOImpl();
 
-             List<Cart> dbCart =
-                     cartDAO.getCartByUserId(userId);
+                BookDAO bookDAO =
+                        new BookDAOImpl();
 
-             List<CartItem> sessionCart =
-                     new ArrayList<>();
+                List<Cart> dbCart =
+                        cartDAO.getCartByUserId(userId);
 
-             for (Cart cartRow : dbCart) {
+                List<CartItem> sessionCart =
+                        new ArrayList<>();
 
-                 Book book =
-                         bookDAO.getBookById(
-                                 cartRow.getBookId());
+                for (Cart cartRow : dbCart) {
 
-                 if (book != null) {
+                    Book book =
+                            bookDAO.getBookById(
+                                    cartRow.getBookId());
 
-                     CartItem item =
-                             new CartItem();
+                    if (book != null) {
 
-                     item.setBook(book);
+                        CartItem item =
+                                new CartItem();
 
-                     item.setQuantity(
-                             cartRow.getQuantity());
+                        item.setBook(book);
 
-                     sessionCart.add(item);
-                 }
-             }
+                        item.setQuantity(
+                                cartRow.getQuantity());
 
-             // Save cart into session
-             session.setAttribute(
-                     "cart",
-                     sessionCart);
+                        sessionCart.add(item);
+                    }
+                }
+
+                // Save cart into session
+                session.setAttribute(
+                        "cart",
+                        sessionCart);
 
                 // REDIRECT HOME
                 response.sendRedirect(
@@ -182,11 +224,11 @@ public class LoginServlet extends HttpServlet {
             } else {
 
                 // =========================
-                // INVALID LOGIN
+                // EMAIL NOT FOUND
                 // =========================
                 request.setAttribute(
                     "errorMessage",
-                    "Invalid email or password."
+                    "No account found. Please create an account first."
                 );
 
                 request.getRequestDispatcher(

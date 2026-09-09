@@ -6,6 +6,7 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - ShelfBound</title>
 
 <link rel="stylesheet"
@@ -46,19 +47,29 @@
 
 				<p class="subtitle">Login to continue your reading experience</p>
 
-				<!-- ================= ERROR MESSAGE ================= -->
+				<!-- ================= MESSAGES ================= -->
 
 				<%
-                String errorMessage =
-                    (String) request.getAttribute("errorMessage");
+                String errorMessage = (String) request.getAttribute("errorMessage");
+                String successParam = request.getParameter("success");
 
                 if(errorMessage != null){
             %>
-
 				<div class="error-message">
 					<%= errorMessage %>
 				</div>
+				<%
+                }
 
+                if(successParam != null){
+                    String successText = "Action completed successfully.";
+                    if("verified".equals(successParam)) successText = "Account verified successfully! Please login.";
+                    else if("passwordReset".equals(successParam)) successText = "Password reset successfully! Login with your new password.";
+                    else if("registered".equals(successParam)) successText = "Registration successful! Please login.";
+            %>
+				<div class="success-message" style="background:#ecfdf5;color:#065f46;border-left:5px solid #10b981;padding:14px 16px;border-radius:12px;margin-bottom:22px;font-size:14px;font-weight:600;text-align:center;box-shadow:0 4px 12px rgba(16,185,129,0.1);">
+					<%= successText %>
+				</div>
 				<%
                 }
             %>
@@ -78,7 +89,11 @@
 
 					<div class="form-group">
 
-						<label>Password</label> <input type="password" name="password"
+						<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+							<label style="margin-bottom: 0;">Password</label>
+							<a href="${pageContext.request.contextPath}/forgotPassword" class="forgot-link" style="color: #2563eb; font-size: 13px; font-weight: 600; text-decoration: none;">Forgot password?</a>
+						</div>
+						<input type="password" name="password"
 							placeholder="Enter your password" required>
 
 					</div>

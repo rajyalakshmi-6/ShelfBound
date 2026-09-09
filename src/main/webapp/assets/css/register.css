@@ -7,41 +7,65 @@
 }
 
 body{
-    font-family:'Segoe UI',sans-serif;
-    background:#f4f7fb;
+    font-family:'Inter', 'Segoe UI', -apple-system, sans-serif;
+    background: 
+        linear-gradient(135deg, rgba(11, 17, 32, 0.82), rgba(30, 58, 138, 0.76)),
+        radial-gradient(1200px circle at 20% 15%, rgba(255, 122, 0, 0.22), transparent 50%),
+        url('../images/auth-bg.jpg') center/cover no-repeat fixed;
     min-height:100vh;
     display:flex;
     justify-content:center;
-    align-items:flex-start;
-    padding:20px 15px;
+    align-items:center;
+    padding:40px 15px;
+    -webkit-font-smoothing: antialiased;
 }
 
 /* ================= MAIN CONTAINER ================= */
 
 .register-container{
     width:100%;
-    max-width:900px;
+    max-width:940px;
     display:flex;
-    background:white;
-    border-radius:16px;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius:24px;
     overflow:hidden;
-    box-shadow:0 10px 40px rgba(0,0,0,0.08);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow:
+        0 25px 60px -10px rgba(0, 0, 0, 0.45),
+        0 0 40px rgba(255, 122, 0, 0.15);
 }
 /* ================= LEFT SECTION ================= */
 .left-section{
     flex:1;
-    background:linear-gradient(135deg, #1e3a8a, #2563eb);
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(30, 58, 138, 0.92));
     color:white;
-    padding:35px 30px;
+    padding:44px 36px;
     display:flex;
     flex-direction:column;
     justify-content:center;
+    position: relative;
+    overflow: hidden;
+}
+
+.left-section::after {
+    content: "";
+    position: absolute;
+    bottom: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,122,0,0.3), transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
 }
 
 .logo{
-    font-size:34px;
-    font-weight:bold;
-    margin-bottom:12px;
+    font-size:36px;
+    font-weight:800;
+    margin-bottom:14px;
+    letter-spacing: -0.5px;
 }
 
 .logo .shelf{
@@ -55,10 +79,11 @@ body{
 .left-section h2{
     font-size:24px;
     margin-bottom:12px;
+    font-weight: 700;
 }
 
 .left-section p{
-    line-height:1.6;
+    line-height:1.7;
     font-size:14px;
     opacity:0.95;
 }
@@ -66,20 +91,22 @@ body{
 /* ================= RIGHT SECTION ================= */
 
 .right-section{
-    flex:1;
-    padding:30px 35px;
+    flex:1.15;
+    padding:35px 40px;
     background:white;
 }
 
 .form-title{
-    font-size:24px;
+    font-size:26px;
     margin-bottom:6px;
-    color:#1e293b;
+    color:#0f172a;
+    font-weight: 800;
+    letter-spacing: -0.5px;
 }
 
 .subtitle{
     color:#64748b;
-    margin-bottom:18px;
+    margin-bottom:20px;
     font-size:14px;
 }
 
@@ -88,22 +115,23 @@ body{
 .error-message{
     background:#fef2f2;
     color:#dc2626;
-    padding:12px;
+    padding:12px 16px;
     border-left:5px solid #dc2626;
-    border-radius:8px;
-    margin-bottom:16px;
-    font-size:13px;
+    border-radius:10px;
+    margin-bottom:18px;
+    font-size:13.5px;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.08);
 }
 
 /* ================= FORM ================= */
 
 .form-group{
-    margin-bottom:12px;
+    margin-bottom:14px;
 }
 
 .form-group label{
     display:block;
-    margin-bottom:5px;
+    margin-bottom:6px;
     color:#334155;
     font-weight:600;
     font-size:13px;
@@ -111,34 +139,36 @@ body{
 
 .form-group input,
 .form-group textarea{
-
     width:100%;
-    padding:10px 12px;
-    border:1px solid #dbe3ec;
-    border-radius:8px;
+    padding:11px 14px;
+    border:1.5px solid #e2e8f0;
+    border-radius:10px;
     font-size:14px;
     outline:none;
-    transition:0.3s;
+    background: #f8fafc;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
 }
 
 .form-group input:focus,
 .form-group textarea:focus{
-
-    border-color:#2563eb;
-
-    box-shadow:0 0 0 3px rgba(37,99,235,0.15);
+    background: #ffffff;
+    border-color:#ff7a00;
+    box-shadow:
+        0 0 0 3px rgba(255, 122, 0, 0.16),
+        0 0 14px rgba(255, 122, 0, 0.1);
 }
 
 textarea{
     resize:none;
-    height:60px;
+    height:64px;
 }
 
 /* ================= GRID ================= */
 
 .row{
     display:flex;
-    gap:12px;
+    gap:14px;
 }
 
 .row .form-group{
@@ -149,20 +179,43 @@ textarea{
 
 .register-btn{
     width:100%;
-    padding:12px;
+    padding:13px;
     border:none;
-    border-radius:8px;
-    background:#ff7a00;
+    border-radius:10px;
+    background: linear-gradient(135deg, #ff7a00, #ff9500);
     color:white;
     font-size:15px;
-    font-weight:bold;
+    font-weight:700;
     cursor:pointer;
-    transition:0.3s;
+    box-shadow: 0 4px 16px rgba(255, 122, 0, 0.35);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-top:6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.register-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
 }
 
 .register-btn:hover{
-    background:#e96d00;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(255, 122, 0, 0.45);
+}
+
+.register-btn:hover::before {
+    left: 100%;
+}
+
+.register-btn:active {
+    transform: translateY(0) scale(0.98);
 }
 
 /* ================= LOGIN LINK ================= */

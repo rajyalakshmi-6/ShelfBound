@@ -4,56 +4,71 @@
 
 :root {
     --navy-900: #0f172a;
+    --navy-800: #1e293b;
     --navy-700: #1e3a8a;
     --navy-600: #1d4ed8;
     --accent-orange: #ff7a00;
+    --accent-orange-glow: rgba(255, 122, 0, 0.25);
     --bg-main: #f8fafc;
-    --bg-card: #ffffff;
-    --text-primary: #1e293b;
-    --text-secondary: #475569;
+    --bg-card: rgba(255, 255, 255, 0.95);
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
     --text-muted: #64748b;
     --border-light: #e2e8f0;
+    --border-glass: rgba(226, 232, 240, 0.85);
     --success: #16a34a;
     --danger: #ef4444;
     --danger-dark: #b91c1c;
     --danger-light: #fee2e2;
     --rose: #ec4899;
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-    --shadow-md: 0 4px 16px rgba(15,23,42,.08);
-    --shadow-hover: 0 10px 24px rgba(15,23,42,.12);
-    --radius-lg: 16px;
-    --radius-md: 12px;
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 4px 20px -2px rgba(15, 23, 42, 0.06);
+    --shadow-hover: 0 16px 36px -8px rgba(15, 23, 42, 0.12);
+    --shadow-smoke: 0 20px 40px -10px rgba(15, 23, 42, 0.14), 0 0 25px -5px rgba(255, 122, 0, 0.12);
+    --radius-lg: 18px;
+    --radius-md: 14px;
     --radius-sm: 8px;
-    --transition: .25s cubic-bezier(.4,0,.2,1);
+    --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-    font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-    background: var(--bg-main);
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: 
+        radial-gradient(1200px circle at 10% 8%, rgba(255, 122, 0, 0.05), transparent 45%),
+        radial-gradient(1100px circle at 90% 25%, rgba(30, 58, 138, 0.06), transparent 50%),
+        radial-gradient(1400px circle at 50% 70%, rgba(255, 122, 0, 0.03), transparent 60%),
+        var(--bg-main);
     color: var(--text-primary);
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+::-webkit-scrollbar { width: 9px; height: 8px; }
+::-webkit-scrollbar-track { background: rgba(241, 245, 249, 0.7); }
+::-webkit-scrollbar-thumb { 
+    background: #cbd5e1; 
+    border-radius: 999px; 
+    border: 2px solid rgba(241, 245, 249, 0.7); 
+}
 ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
 
-/* ================= NAVBAR ================= */
+/* ================= NAVBAR (SMOKY GLASS) ================= */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 40px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-light);
+    padding: 14px 44px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px) saturate(190%);
+    -webkit-backdrop-filter: blur(20px) saturate(190%);
+    border-bottom: 1px solid var(--border-glass);
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 0 16px rgba(255, 122, 0, 0.03);
+    transition: var(--transition);
 }
 
 .logo-container {
@@ -81,7 +96,7 @@ body {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 8px;
 }
 
 .nav-links a {
@@ -89,26 +104,32 @@ body {
     color: var(--text-muted);
     font-weight: 600;
     font-size: 14px;
-    padding: 8px 14px;
-    border-radius: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
     transition: var(--transition);
+    border: 1px solid transparent;
 }
 .nav-links a:hover {
     color: var(--navy-700);
-    background: rgba(30, 58, 138, 0.07);
+    background: rgba(30, 58, 138, 0.06);
+    border-color: rgba(30, 58, 138, 0.12);
+    transform: translateY(-1px);
 }
 .nav-links a.active {
     color: var(--navy-700);
-    background: rgba(30, 58, 138, 0.07);
+    background: rgba(30, 58, 138, 0.09);
+    border-color: rgba(30, 58, 138, 0.18);
+    box-shadow: inset 0 1px 2px rgba(30, 58, 138, 0.08);
 }
 
 .welcome-user {
     color: var(--navy-700);
     font-weight: 700;
     font-size: 13px;
-    padding: 8px 14px;
+    padding: 8px 16px;
     background: rgba(30, 58, 138, 0.06);
-    border-radius: 8px;
+    border: 1px solid rgba(30, 58, 138, 0.12);
+    border-radius: 999px;
 }
 
 /* ================= LOGOUT BUTTON STYLES ================= */
@@ -265,8 +286,10 @@ body {
 
 /* ================= CART TABLE ================= */
 .cart-table-wrap {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
     overflow: hidden;
@@ -473,11 +496,13 @@ body {
 }
 
 .summary-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-lg);
-    padding: 24px;
-    box-shadow: var(--shadow-md);
+    padding: 26px;
+    box-shadow: 0 10px 30px -8px rgba(15, 23, 42, 0.08), 0 0 20px -5px rgba(255, 122, 0, 0.06);
     margin-bottom: 20px;
 }
 
@@ -524,7 +549,7 @@ body {
 .btn-checkout {
     display: block;
     width: 100%;
-    padding: 14px 24px;
+    padding: 15px 24px;
     background: linear-gradient(135deg, var(--success), #059669);
     color: #ffffff;
     text-decoration: none;
@@ -532,16 +557,37 @@ body {
     font-weight: 700;
     font-size: 15px;
     text-align: center;
-    transition: var(--transition);
-    box-shadow: 0 4px 16px rgba(22, 163, 74, 0.25);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 18px rgba(22, 163, 74, 0.3);
     border: none;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-checkout::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
 }
 
 .btn-checkout:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(22, 163, 74, 0.35);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
     background: linear-gradient(135deg, #059669, #047857);
+}
+
+.btn-checkout:hover::before {
+    left: 100%;
+}
+
+.btn-checkout:active {
+    transform: translateY(0) scale(0.98);
 }
 
 .secure-badge {
@@ -557,10 +603,12 @@ body {
 
 /* ================= COUPON BOX ================= */
 .coupon-box {
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid var(--border-glass);
     border-radius: var(--radius-lg);
-    padding: 20px;
+    padding: 22px;
     box-shadow: var(--shadow-sm);
 }
 

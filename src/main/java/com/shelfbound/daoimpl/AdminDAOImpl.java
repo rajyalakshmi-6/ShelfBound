@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import com.shelfbound.connection.DBConnection;
 import com.shelfbound.dao.AdminDAO;
 import com.shelfbound.model.Admin;
+import com.shelfbound.util.PasswordUtil;
 
 public class AdminDAOImpl implements AdminDAO {
 
@@ -18,38 +19,41 @@ public class AdminDAOImpl implements AdminDAO {
 	public Admin loginAdmin(String username,
 			String password) {
 
-		String sql =
-				"SELECT * FROM admin " +
-						"WHERE username=? AND password=?";
+		String sql = "SELECT * FROM admin WHERE username=?";
 
 		try (
 				Connection conn = DBConnection.getConnection();
-				PreparedStatement ps =
-						conn.prepareStatement(sql)
+				PreparedStatement ps = conn.prepareStatement(sql)
 				) {
 
 			ps.setString(1, username);
-			ps.setString(2, password);
 
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
+				String storedPassword = rs.getString("password");
 
-				Admin admin = new Admin();
+				if (PasswordUtil.checkPassword(password, storedPassword)) {
+					// Auto-upgrade legacy plain text admin password to BCrypt
+					if (!PasswordUtil.isBcryptHash(storedPassword)) {
+						try (PreparedStatement updatePs = conn.prepareStatement("UPDATE admin SET password=? WHERE admin_id=?")) {
+							updatePs.setString(1, PasswordUtil.hashPassword(password));
+							updatePs.setInt(2, rs.getInt("admin_id"));
+							updatePs.executeUpdate();
+							System.out.println("✔ [AdminDAOImpl] Auto-upgraded admin password to BCrypt hash in MySQL.");
+						} catch (Exception ex) {
+							System.err.println("Could not auto-upgrade admin password: " + ex.getMessage());
+						}
+					}
 
-				admin.setAdminId(
-						rs.getInt("admin_id")
-						);
+					Admin admin = new Admin();
 
-				admin.setUsername(
-						rs.getString("username")
-						);
+					admin.setAdminId(rs.getInt("admin_id"));
+					admin.setUsername(rs.getString("username"));
+					admin.setPassword(storedPassword);
 
-				admin.setPassword(
-						rs.getString("password")
-						);
-
-				return admin;
+					return admin;
+				}
 			}
 
 		} catch (Exception e) {

@@ -7,6 +7,7 @@ import com.shelfbound.connection.DBConnection;
 import com.shelfbound.dao.OrderDAO;
 import com.shelfbound.model.Order;
 import com.shelfbound.model.OrderItem;
+import com.shelfbound.model.User;
 
 public class OrderDAOImpl implements OrderDAO {
 
@@ -270,6 +271,29 @@ public class OrderDAOImpl implements OrderDAO {
 
 	    return 0;
 	}
-	
-	
+
+	@Override
+	public User getUserByOrderId(int orderId) throws Exception {
+		String sql = "SELECT u.* FROM users u JOIN orders o ON u.user_id = o.user_id WHERE o.order_id = ?";
+		try (Connection con = DBConnection.getConnection();
+		     PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setInt(1, orderId);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					User u = new User();
+					u.setUserId(rs.getInt("user_id"));
+					u.setUsername(rs.getString("username"));
+					u.setEmail(rs.getString("email"));
+					u.setPhone(rs.getString("phone"));
+					u.setAddress(rs.getString("address"));
+					u.setCity(rs.getString("city"));
+					u.setState(rs.getString("state"));
+					u.setPincode(rs.getString("pincode"));
+					u.setStatus(rs.getString("status"));
+					return u;
+				}
+			}
+		}
+		return null;
+	}
 }

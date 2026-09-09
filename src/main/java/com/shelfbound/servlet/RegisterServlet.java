@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import com.shelfbound.daoimpl.UserDAOImpl;
 import com.shelfbound.model.User;
+import com.shelfbound.util.EmailService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class RegisterServlet extends HttpServlet {
 
@@ -177,29 +179,21 @@ public class RegisterServlet extends HttpServlet {
             user.setPincode(pincode);
 
             // =========================
-            // REGISTER USER
+            // GENERATE OTP & INITIATE VERIFICATION
             // =========================
-            boolean inserted =
-                dao.registerUser(user);
+            String otp = EmailService.generateOtp();
+            EmailService.sendOtpEmail(email, otp, "registration");
 
-            if (inserted) {
+            HttpSession session = request.getSession();
+            session.setAttribute("pendingUser", user);
+            session.setAttribute("regOtp", otp);
+            session.setAttribute("regOtpExpiry", System.currentTimeMillis() + (5 * 60 * 1000)); // 5 mins
+            session.setAttribute("regOtpEmail", email);
 
-                response.sendRedirect(
-                    request.getContextPath() +
-                    "/login?success=registered"
-                );
-
-            } else {
-
-                request.setAttribute(
-                    "errorMessage",
-                    "Registration failed. Please try again."
-                );
-
-                request.getRequestDispatcher(
-                    "/customer/register.jsp"
-                ).forward(request, response);
-            }
+            response.sendRedirect(
+                request.getContextPath() +
+                "/verifyOtp"
+            );
 
         } catch (Exception e) {
 

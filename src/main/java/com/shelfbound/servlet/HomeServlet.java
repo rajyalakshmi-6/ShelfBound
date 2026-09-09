@@ -26,7 +26,6 @@ public class HomeServlet extends HttpServlet {
             throws ServletException, IOException {
 
         try {
-
             // DAO OBJECT
             BookDAO dao = new BookDAOImpl();
 

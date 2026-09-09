@@ -16,4 +16,6 @@ public interface ContactMessageDAO {
     boolean replyToMessage(int messageId, String reply);
 
     boolean deleteMessage(int messageId);
+
+    ContactMessage getMessageById(int messageId);
 }

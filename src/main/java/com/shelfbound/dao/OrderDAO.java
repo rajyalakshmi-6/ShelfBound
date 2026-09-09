@@ -2,6 +2,7 @@ package com.shelfbound.dao;
 
 import java.util.List;
 import com.shelfbound.model.Order;
+import com.shelfbound.model.User;
 
 public interface OrderDAO {
     List<Order> getOrdersByUser(int userId) throws Exception;
@@ -23,4 +24,6 @@ public interface OrderDAO {
  boolean updateOrderStatus(int orderId, String status) throws Exception;
  
  int getOrderCount(int userId);
+
+ User getUserByOrderId(int orderId) throws Exception;
 }

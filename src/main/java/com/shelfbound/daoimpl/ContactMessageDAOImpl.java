@@ -157,4 +157,30 @@ public class ContactMessageDAOImpl implements ContactMessageDAO {
 
         return false;
     }
+
+    @Override
+    public ContactMessage getMessageById(int messageId) {
+        String sql = "SELECT * FROM contact_messages WHERE message_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, messageId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    ContactMessage msg = new ContactMessage();
+                    msg.setMessageId(rs.getInt("message_id"));
+                    msg.setName(rs.getString("name"));
+                    msg.setEmail(rs.getString("email"));
+                    msg.setMessage(rs.getString("message"));
+                    msg.setStatus(rs.getString("status"));
+                    msg.setAdminReply(rs.getString("admin_reply"));
+                    msg.setSubmittedAt(rs.getTimestamp("submitted_at"));
+                    msg.setRepliedAt(rs.getTimestamp("replied_at"));
+                    return msg;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

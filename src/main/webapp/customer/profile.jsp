@@ -33,8 +33,12 @@ String error = request.getParameter("error");
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>My Profile | ShelfBound</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet"
 href="<%=request.getContextPath()%>/assets/css/profile.css">
@@ -44,70 +48,52 @@ href="<%=request.getContextPath()%>/assets/css/profile.css">
 <body>
 
 <!-- ================= TOAST ================= -->
-
 <div id="toast" class="toast"></div>
 
 <!-- ================= NAVBAR ================= -->
-
 <div class="navbar">
 
-    <a href="<%=request.getContextPath()%>/home"
-       class="logo-container">
-
-        <img
-        src="<%=request.getContextPath()%>/assets/images/logo.png"
-        class="logo-img">
-
+    <a href="<%=request.getContextPath()%>/home" class="logo-container">
+        <img src="<%=request.getContextPath()%>/assets/images/logo.png" alt="ShelfBound Logo" class="logo-img">
         <div class="logo">
-
             <span class="logo-shelf">Shelf</span><span class="logo-bound">Bound</span>
-
         </div>
-
     </a>
 
     <div class="nav-links">
-
         <a href="<%=request.getContextPath()%>/home">Home</a>
-
         <a href="<%=request.getContextPath()%>/books">Books</a>
-
         <a href="<%=request.getContextPath()%>/cart">Cart</a>
-
         <a href="<%=request.getContextPath()%>/orders">Orders</a>
-
         <a href="<%=request.getContextPath()%>/wishlist">Wishlist</a>
 
-       				<!-- ================= PROFILE AVATAR (initials circle / guest icon) - START ================= -->
-<!-- 📌 REUSABLE BLOCK: copy this <a class="profile-avatar-link">...</a> to any page's navbar -->
-<a href="<%= request.getContextPath() %>/profile" class="profile-avatar-link" title="<%= username != null ? username : "Profile" %>">
-    <%
-        if (username != null && !username.trim().isEmpty()) {
-            String initials = username.trim().length() >= 2
-                    ? username.trim().substring(0, 2).toUpperCase()
-                    : username.trim().substring(0, 1).toUpperCase();
-    %>
-    <div class="profile-avatar"><%= initials %></div>
-    <%
-        } else {
-    %>
-    <div class="profile-avatar profile-avatar-guest">👤</div>
-    <%
-        }
-    %>
-</a>
-<!-- ================= PROFILE AVATAR (initials circle / guest icon) - END ================= -->
+        <!-- PROFILE AVATAR (ACTIVE) -->
+        <a href="<%= request.getContextPath() %>/profile" class="profile-avatar-link active" title="My Profile">
+            <%
+                if (username != null && !username.trim().isEmpty()) {
+                    String initials = username.trim().length() >= 2
+                            ? username.trim().substring(0, 2).toUpperCase()
+                            : username.trim().substring(0, 1).toUpperCase();
+            %>
+            <div class="profile-avatar profile-avatar-active"><%= initials %></div>
+            <%
+                } else {
+            %>
+            <div class="profile-avatar profile-avatar-guest">👤</div>
+            <%
+                }
+            %>
+        </a>
 
-        <span class="welcome-user">Welcome, <%= username %></span>
-            <a href="<%= request.getContextPath() %>/logout" class="btn-logout" title="Logout">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2v10"></path>
-                    <path d="M18.36 6.64a9 9 0 1 1-12.72 0"></path>
-                </svg>
-            </a>
-            
-            <a href="<%= request.getContextPath() %>/adminLogin">Admin</a>
-
+        <span class="welcome-user">Hi, <%= username %></span>
+        <a href="<%= request.getContextPath() %>/logout" class="btn-logout" title="Logout">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v10"></path>
+                <path d="M18.36 6.64a9 9 0 1 1-12.72 0"></path>
+            </svg>
+        </a>
+        
+        <a href="<%= request.getContextPath() %>/adminLogin" class="nav-admin">Admin</a>
     </div>
 
 </div>
@@ -126,28 +112,27 @@ href="<%=request.getContextPath()%>/assets/css/profile.css">
         <span class="card-badge">📖 Active Reader</span>
     </div>
 </div>
-<!-- ================= DASHBOARD ================= -->
 
-<!-- ================= DASHBOARD ================= -->
+<!-- ================= DASHBOARD METRICS ================= -->
 <div class="dashboard">
 
-    <div class="dashboard-card">
+    <a href="<%= request.getContextPath() %>/orders" class="dashboard-card" title="View My Orders">
         <div class="dashboard-icon">📦</div>
         <div class="count"><%=orderCount%></div>
         <div class="label">Orders</div>
-    </div>
+    </a>
 
-    <div class="dashboard-card">
+    <a href="<%= request.getContextPath() %>/wishlist" class="dashboard-card" title="View My Wishlist">
         <div class="dashboard-icon">❤️</div>
         <div class="count"><%=wishlistCount%></div>
         <div class="label">Wishlist</div>
-    </div>
+    </a>
 
-    <div class="dashboard-card">
+    <a href="<%= request.getContextPath() %>/cart" class="dashboard-card" title="View My Cart">
         <div class="dashboard-icon">🛒</div>
         <div class="count"><%=cartCount%></div>
         <div class="label">Cart</div>
-    </div>
+    </a>
 
 </div>
 <!-- ================= PROFILE CARD ================= -->

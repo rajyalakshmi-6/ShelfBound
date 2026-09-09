@@ -1,56 +1,67 @@
 /* =====================================================
-   PROFILE PAGE - ShelfBound
+   PROFILE PAGE - ShelfBound (Smoky Glassmorphism UI)
 ===================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap');
 
 :root {
-    --navy-900: #10192e;
+    --navy-900: #0f172a;
+    --navy-800: #1e293b;
     --navy-700: #1e3a8a;
+    --navy-600: #2563eb;
     --accent-orange: #ff7a00;
+    --accent-orange-hover: #e06900;
     --orange-100: #fff1e0;
-    --bg-main: #fbfbfb;
+    --bg-main: #f8fafc;
     --bg-card: #ffffff;
-    --text-primary: #1e293b;
+    --text-primary: #0f172a;
     --text-muted: #64748b;
     --border-light: #e2e8f0;
+    --border-glass: rgba(226, 232, 240, 0.85);
 
     --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
-    --shadow-md: 0 4px 12px rgba(15,23,42,.06);
-    --shadow-hover: 0 10px 22px rgba(15,23,42,.10);
+    --shadow-md: 0 4px 16px -2px rgba(15,23,42,.06);
+    --shadow-hover: 0 16px 36px -4px rgba(15,23,42,.12);
 
-    --radius-lg:16px;
-    --radius-md:12px;
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 8px;
 
-    --transition:.25s cubic-bezier(.4,0,.2,1);
+    --transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* =========================
         BODY
 ========================= */
-
-body{
-    margin:0;
-    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-    background:var(--bg-main);
-    color:var(--text-primary);
+body {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: 
+        radial-gradient(1200px circle at 10% 8%, rgba(255, 122, 0, 0.05), transparent 45%),
+        radial-gradient(1100px circle at 90% 25%, rgba(30, 58, 138, 0.06), transparent 50%),
+        radial-gradient(1400px circle at 50% 70%, rgba(255, 122, 0, 0.03), transparent 60%),
+        var(--bg-main);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   NAVBAR (standardized to match book-details.css)
-   ═══════════════════════════════════════════════════════════════ */
+/* ================= NAVBAR (SMOKY GLASSMORPHISM) ================= */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 40px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-light);
+    padding: 14px 44px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px) saturate(190%);
+    -webkit-backdrop-filter: blur(20px) saturate(190%);
+    border-bottom: 1px solid var(--border-glass);
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 0 16px rgba(255, 122, 0, 0.03);
+    transition: var(--transition);
 }
 
 .logo-container {
@@ -58,7 +69,7 @@ body{
     align-items: center;
     gap: 0;
     text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: var(--transition);
 }
 
 .logo-container:hover { opacity: 0.95; }
@@ -85,7 +96,7 @@ body{
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 8px;
 }
 
 .nav-links a {
@@ -93,28 +104,34 @@ body{
     color: var(--text-muted);
     font-weight: 600;
     font-size: 14px;
-    padding: 8px 14px;
-    border-radius: 8px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 8px 16px;
+    border-radius: 999px;
+    transition: var(--transition);
+    border: 1px solid transparent;
 }
 
 .nav-links a:hover {
     color: var(--navy-700);
-    background: rgba(30, 58, 138, 0.07);
+    background: rgba(30, 58, 138, 0.06);
+    border-color: rgba(30, 58, 138, 0.12);
+    transform: translateY(-1px);
 }
 
 .nav-links a.active {
     color: var(--navy-700);
-    background: rgba(30, 58, 138, 0.07);
+    background: rgba(30, 58, 138, 0.09);
+    border-color: rgba(30, 58, 138, 0.18);
+    box-shadow: inset 0 1px 2px rgba(30, 58, 138, 0.08);
 }
 
 .welcome-user {
     color: var(--navy-700);
     font-weight: 700;
     font-size: 13px;
-    padding: 8px 14px;
+    padding: 8px 16px;
     background: rgba(30, 58, 138, 0.06);
-    border-radius: 8px;
+    border: 1px solid rgba(30, 58, 138, 0.12);
+    border-radius: 999px;
 }
 
 /* ================= LOGOUT BUTTON ================= */
@@ -122,16 +139,17 @@ body{
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #64748b;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.6);
+    color: var(--text-muted);
     font-size: 16px;
-    transition: all 0.3s ease;
-    margin-left: 6px;
+    transition: var(--transition);
+    margin-left: 4px;
     vertical-align: middle;
     border: 1px solid var(--border-light);
+    cursor: pointer;
 }
 
 .btn-logout:hover {
@@ -139,7 +157,7 @@ body{
     border-color: #ef4444;
     color: #fff;
     transform: scale(1.08);
-    box-shadow: 0 0 14px rgba(239, 68, 68, 0.4);
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.35);
 }
 
 .btn-logout svg {
@@ -148,26 +166,48 @@ body{
     height: 16px;
 }
 
+/* ================= ADMIN LINK BADGE ================= */
+.nav-admin {
+    padding: 7px 16px !important;
+    border-radius: 999px !important;
+    background: #0f172a !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.18) !important;
+    transition: var(--transition) !important;
+}
+
+.nav-admin:hover {
+    background: #1e293b !important;
+    color: #ff7a00 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.28) !important;
+}
+
 /* ================= PROFILE AVATAR ================= */
 .profile-avatar-link {
-    display: inline-flex;
+    display: inline-flex !important;
     text-decoration: none;
     padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
 }
 
 .profile-avatar {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: var(--navy-700);
+    background: linear-gradient(135deg, #1e3a8a, #ff7a00);
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.3px;
-    box-shadow: 0 2px 6px rgba(30, 58, 138, 0.3);
+    box-shadow: 0 2px 8px rgba(30, 58, 138, 0.3);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     user-select: none;
 }
@@ -182,11 +222,18 @@ body{
 
 .profile-avatar-link:hover .profile-avatar {
     transform: scale(1.08);
-    box-shadow: 0 4px 10px rgba(30, 58, 138, 0.4);
+    box-shadow: 0 4px 14px rgba(255, 122, 0, 0.4);
+}
+
+/* ACTIVE RING FOR PROFILE PAGE */
+.profile-avatar-active,
+.profile-avatar-link.active .profile-avatar {
+    box-shadow: 0 0 0 3px #ff7a00, 0 4px 14px rgba(255, 122, 0, 0.45);
+    transform: scale(1.06);
 }
 
 @media (max-width: 900px) {
-    .navbar { flex-direction: column; gap: 12px; padding: 14px 20px; }
+    .navbar { flex-direction: column; gap: 14px; padding: 16px 20px; }
     .nav-links { justify-content: center; gap: 8px; }
 }
 

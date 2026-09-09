@@ -3,10 +3,13 @@ package com.shelfbound.daoimpl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.shelfbound.connection.DBConnection;
 import com.shelfbound.dao.UserDAO;
 import com.shelfbound.model.User;
+import com.shelfbound.util.PasswordUtil;
 
 public class UserDAOImpl implements UserDAO {
 
@@ -18,8 +21,8 @@ public class UserDAOImpl implements UserDAO {
 
         String sql =
             "INSERT INTO users " +
-            "(username, email, password, phone, address, city, state, pincode) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            "(username, email, password, phone, address, city, state, pincode, status) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (
             Connection conn = DBConnection.getConnection();
@@ -28,12 +31,20 @@ public class UserDAOImpl implements UserDAO {
 
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getEmail());
-            ps.setString(3, user.getPassword());
+
+            // Hash password with BCrypt
+            String plainPwd = user.getPassword();
+            String hashedPwd = (plainPwd != null && !PasswordUtil.isBcryptHash(plainPwd))
+                    ? PasswordUtil.hashPassword(plainPwd)
+                    : plainPwd;
+            ps.setString(3, hashedPwd);
+
             ps.setString(4, user.getPhone());
             ps.setString(5, user.getAddress());
             ps.setString(6, user.getCity());
             ps.setString(7, user.getState());
             ps.setString(8, user.getPincode());
+            ps.setString(9, user.getStatus() != null ? user.getStatus() : "ACTIVE");
 
             int rows = ps.executeUpdate();
 
@@ -54,7 +65,7 @@ public class UserDAOImpl implements UserDAO {
 
         String sql =
             "SELECT * FROM users " +
-            "WHERE email = ? AND password = ?";
+            "WHERE email = ?";
 
         try (
             Connection conn = DBConnection.getConnection();
@@ -62,23 +73,38 @@ public class UserDAOImpl implements UserDAO {
         ) {
 
             ps.setString(1, email);
-            ps.setString(2, password);
 
             ResultSet rs = ps.executeQuery();
 
             if (rs.next()) {
+                String storedPassword = rs.getString("password");
+
+                // Verify with BCrypt (supports legacy plain text with auto-upgrade)
+                if (!PasswordUtil.checkPassword(password, storedPassword)) {
+                    return null;
+                }
+
+                // Auto-upgrade legacy plain text password to BCrypt
+                if (!PasswordUtil.isBcryptHash(storedPassword)) {
+                    try {
+                        updatePassword(email, password);
+                    } catch (Exception ex) {
+                        // ignore
+                    }
+                }
 
                 User user = new User();
 
                 user.setUserId(rs.getInt("user_id"));
                 user.setUsername(rs.getString("username"));
                 user.setEmail(rs.getString("email"));
-                user.setPassword(rs.getString("password"));
+                user.setPassword(storedPassword);
                 user.setPhone(rs.getString("phone"));
                 user.setAddress(rs.getString("address"));
                 user.setCity(rs.getString("city"));
                 user.setState(rs.getString("state"));
                 user.setPincode(rs.getString("pincode"));
+                user.setStatus(rs.getString("status") != null ? rs.getString("status") : "ACTIVE");
 
                 return user;
             }
@@ -119,13 +145,11 @@ public class UserDAOImpl implements UserDAO {
     // CHECK EMAIL EXISTS
     public boolean isEmailExists(String email) {
 
-        String sql =
-            "SELECT user_id FROM users WHERE email=?";
+        String sql = "SELECT user_id FROM users WHERE email=?";
 
-        try (
-            Connection conn = DBConnection.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)
-        ) {
+        try ( Connection conn = DBConnection.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql)) 
+        {
 
             ps.setString(1, email);
 
@@ -136,6 +160,7 @@ public class UserDAOImpl implements UserDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
 
         return false;
     }
@@ -168,5 +193,104 @@ public class UserDAOImpl implements UserDAO {
         }
 
         return false;
+    }
+
+    @Override
+    public boolean updatePassword(String email, String newPassword) {
+        String sql = "UPDATE users SET password=? WHERE email=?";
+
+        try (
+            Connection con = DBConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+        ) {
+            String hashedPassword = (newPassword != null && !PasswordUtil.isBcryptHash(newPassword))
+                    ? PasswordUtil.hashPassword(newPassword)
+                    : newPassword;
+            ps.setString(1, hashedPassword);
+            ps.setString(2, email);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> list = new ArrayList<>();
+        String sql = "SELECT * FROM users ORDER BY user_id DESC";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                User u = new User();
+                u.setUserId(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setEmail(rs.getString("email"));
+                u.setPhone(rs.getString("phone"));
+                u.setAddress(rs.getString("address"));
+                u.setCity(rs.getString("city"));
+                u.setState(rs.getString("state"));
+                u.setPincode(rs.getString("pincode"));
+                u.setCreatedAt(rs.getTimestamp("created_at"));
+                u.setStatus(rs.getString("status") != null ? rs.getString("status") : "ACTIVE");
+                list.add(u);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public boolean updateUserStatus(int userId, String status) {
+        String sql = "UPDATE users SET status=? WHERE user_id=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, status);
+            ps.setInt(2, userId);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    public User getUserById(int userId) {
+        String sql = "SELECT * FROM users WHERE user_id=?";
+
+        try (Connection con = DBConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    User u = new User();
+                    u.setUserId(rs.getInt("user_id"));
+                    u.setUsername(rs.getString("username"));
+                    u.setEmail(rs.getString("email"));
+                    u.setPhone(rs.getString("phone"));
+                    u.setAddress(rs.getString("address"));
+                    u.setCity(rs.getString("city"));
+                    u.setState(rs.getString("state"));
+                    u.setPincode(rs.getString("pincode"));
+                    u.setCreatedAt(rs.getTimestamp("created_at"));
+                    u.setStatus(rs.getString("status") != null ? rs.getString("status") : "ACTIVE");
+                    return u;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

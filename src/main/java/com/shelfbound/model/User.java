@@ -17,6 +17,7 @@ public class User implements Serializable {
     private String state;
     private String pincode;
     private Timestamp createdAt;
+    private String status = "ACTIVE";
 
     // =========================
     // DEFAULT CONSTRUCTOR
@@ -49,6 +50,7 @@ public class User implements Serializable {
         this.state = state;
         this.pincode = pincode;
         this.createdAt = createdAt;
+        this.status = "ACTIVE";
     }
 
     // =========================
@@ -133,5 +135,13 @@ public class User implements Serializable {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

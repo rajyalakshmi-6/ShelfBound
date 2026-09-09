@@ -2,6 +2,9 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="com.shelfbound.model.CartItem" %>
+<%@ page import="com.shelfbound.model.Offer" %>
+<%@ page import="com.shelfbound.dao.OfferDAO" %>
+<%@ page import="com.shelfbound.daoimpl.OfferDAOImpl" %>
 <%@ page import="com.shelfbound.connection.DBConnection" %>
 
 <%
@@ -74,8 +77,18 @@
     /* ========== END CHANGE ========== */
 
     double discountPercent = 0;
-    if ("WELCOME20".equals(appliedCoupon)) {
-        discountPercent = 0.20;
+    if (!appliedCoupon.isEmpty()) {
+        Double sessionPercent = (Double) session.getAttribute("couponDiscountPercent");
+        if (sessionPercent != null && sessionPercent > 0) {
+            discountPercent = sessionPercent;
+        } else {
+            com.shelfbound.dao.OfferDAO offerDAO = new com.shelfbound.daoimpl.OfferDAOImpl();
+            com.shelfbound.model.Offer offer = offerDAO.getOfferByCode(appliedCoupon);
+            if (offer != null && offer.isActive() && subtotal >= offer.getMinOrderAmount()) {
+                discountPercent = offer.getDiscountPercentage() / 100.0;
+                session.setAttribute("couponDiscountPercent", discountPercent);
+            }
+        }
     }
     double discountAmount = subtotal * discountPercent;
     double shipping = 0;

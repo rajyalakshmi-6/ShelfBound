@@ -6,6 +6,7 @@ import java.util.List;
 import com.shelfbound.dao.ContactMessageDAO;
 import com.shelfbound.daoimpl.ContactMessageDAOImpl;
 import com.shelfbound.model.ContactMessage;
+import com.shelfbound.util.EmailService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -85,7 +86,17 @@ public class AdminMessageServlet extends HttpServlet {
                 int id = Integer.parseInt(request.getParameter("messageId"));
                 String reply = request.getParameter("reply");
 
+                ContactMessage msg = dao.getMessageById(id);
                 dao.replyToMessage(id, reply);
+
+                // Send real email to customer with admin reply
+                try {
+                    if (msg != null && msg.getEmail() != null) {
+                        EmailService.sendAdminReply(msg.getEmail(), msg.getName(), msg.getMessage(), reply);
+                    }
+                } catch (Exception ex) {
+                    System.err.println("[AdminMessageServlet] Failed to dispatch reply email: " + ex.getMessage());
+                }
             }
 
             // =========================

@@ -10,3 +10,4 @@ bin/
 Servers/
 
 *.class
+src/main/webapp/WEB-INF/classes/

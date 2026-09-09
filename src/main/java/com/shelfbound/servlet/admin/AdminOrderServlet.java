@@ -6,6 +6,8 @@ import java.util.List;
 import com.shelfbound.dao.OrderDAO;
 import com.shelfbound.daoimpl.OrderDAOImpl;
 import com.shelfbound.model.Order;
+import com.shelfbound.model.User;
+import com.shelfbound.util.EmailService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -76,6 +78,16 @@ public class AdminOrderServlet extends HttpServlet {
                 String status = request.getParameter("status");
 
                 dao.updateOrderStatus(orderId, status);
+
+                // Send real email notification to customer
+                try {
+                    User user = dao.getUserByOrderId(orderId);
+                    if (user != null && user.getEmail() != null) {
+                        EmailService.sendOrderStatusUpdate(user.getEmail(), user.getUsername(), orderId, status);
+                    }
+                } catch (Exception ex) {
+                    System.err.println("[AdminOrderServlet] Failed to send status update email: " + ex.getMessage());
+                }
             }
 
             response.sendRedirect(
