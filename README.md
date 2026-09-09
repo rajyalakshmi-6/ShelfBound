@@ -259,8 +259,7 @@ All application architecture, database design, business logic, integration, test
 ### 🔑 Email OTP Verification (Live 5-Minute Countdown)
 ![OTP Verification](screenshots/otp-verification-page.png)
 
-### 🔄 Password Recovery (Forgot Password & Reset)
-![Forgot Password](screenshots/forgot-password-page.png)
+### 🔄 Password Recovery (Reset Password)
 ![Reset Password](screenshots/reset-password-page.png)
 
 ### 📧 Automated Real-Time Email Proof (Live Inbox Delivery)
@@ -297,7 +296,6 @@ ShelfBound dispatches HTML emails directly to user inboxes over Brevo's HTTPS AP
 ### 🛒 Shopping Cart & Dynamic Coupon Engine
 ![Cart Page 1](screenshots/cart-page-1.png)
 ![Cart Page 2](screenshots/cart-page-2.png)
-![All Offers & Coupons Modal](screenshots/cart-offers-modal.png)
 
 ### 💳 Checkout & Shipping Address
 ![Checkout Page 1](screenshots/checkout-page-1.png)
