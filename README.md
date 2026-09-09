@@ -383,8 +383,8 @@ Real-time delivery progress shown on an interactive map from dispatch to doorste
 ### 3. 🌐 Internationalization & Multi-Currency (i18n / l10n)
 Support for regional languages and multi-currency pricing for global shoppers.
 
-### 4. 🎁 Per-Book Admin Customization & Offers
-Admin-configurable promotional tags, flash sales, and limited-time discounts from the Manage Books panel.
+### 4. 🤖 AI-Powered Customer Support Chatbot
+Integration of an intelligent conversational chatbot for instant user interaction, automated query resolution, real-time order status tracking, and 24/7 customer assistance.
 
 ### 5. ⭐ AI-Based Book Recommendations
 Personalized book suggestions based on browsing history and previous purchases.
