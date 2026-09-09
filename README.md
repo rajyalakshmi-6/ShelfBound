@@ -295,7 +295,8 @@ ShelfBound dispatches HTML emails directly to user inboxes over Brevo's HTTPS AP
 ![Wishlist Page](screenshots/wishlist-page.png)
 
 ### 🛒 Shopping Cart & Dynamic Coupon Engine
-![Cart Page](screenshots/cart-page.png)
+![Cart Page 1](screenshots/cart-page-1.png)
+![Cart Page 2](screenshots/cart-page-2.png)
 ![All Offers & Coupons Modal](screenshots/cart-offers-modal.png)
 
 ### 💳 Checkout & Shipping Address
@@ -327,11 +328,12 @@ ShelfBound dispatches HTML emails directly to user inboxes over Brevo's HTTPS AP
 ### 📊 Admin Analytics Dashboard
 ![Admin Dashboard](screenshots/admin-dashboard.png)
 
-### 👥 Customer Account Control & User Blocking
-![Manage Users & Account Control](screenshots/manage-users-page.png)
+### 👥 Customer Account Control & User Blocking (Manage Users)
+![Manage Users](screenshots/manage-users-page.png)
 
 ### 🏷️ Promotional Offers & Coupon Management
 ![Manage Offers](screenshots/manage-offers-page.png)
+![Add New Offer](screenshots/add-offer-page.png)
 
 ### 📚 Inventory & Book Management
 ![Manage Books](screenshots/manage-books.png)
