@@ -71,10 +71,16 @@ public class EmailService {
             System.err.println("[EmailService] Could not read email.properties from classpath: " + e.getMessage());
         }
 
-        // Brevo Environment Variables
-        if (System.getenv("BREVO_API_KEY") != null && !System.getenv("BREVO_API_KEY").trim().isEmpty()) {
-            brevoApiKey = System.getenv("BREVO_API_KEY").trim();
+        // Brevo Environment Variables (support common naming variations)
+        String envBrevo = System.getenv("BREVO_API_KEY");
+        if (envBrevo == null || envBrevo.trim().isEmpty()) envBrevo = System.getenv("BREVO_KEY");
+        if (envBrevo == null || envBrevo.trim().isEmpty()) envBrevo = System.getenv("BREVO_APIKEY");
+        if (envBrevo == null || envBrevo.trim().isEmpty()) envBrevo = System.getenv("brevo_api_key");
+
+        if (envBrevo != null && !envBrevo.trim().isEmpty()) {
+            brevoApiKey = envBrevo.trim();
         }
+
         if (System.getenv("BREVO_SENDER_EMAIL") != null && !System.getenv("BREVO_SENDER_EMAIL").trim().isEmpty()) {
             senderEmail = System.getenv("BREVO_SENDER_EMAIL").trim();
         }
@@ -233,7 +239,7 @@ public class EmailService {
      * Uses Brevo API if configured, otherwise falls back to SMTP.
      */
     public static boolean sendHtmlEmail(String toEmail, String subject, String htmlBody, boolean async) {
-        if (!isConfigured()) {
+        if (brevoApiKey == null || brevoApiKey.trim().isEmpty()) {
             loadConfig();
         }
 
@@ -242,11 +248,15 @@ public class EmailService {
             return true;
         }
 
+        System.out.println("ℹ [EmailService] Initiating email delivery to: " + toEmail + " | Brevo Engine Active: " + (brevoApiKey != null && !brevoApiKey.trim().isEmpty()));
+
         Runnable sendTask = () -> {
             if (brevoApiKey != null && !brevoApiKey.trim().isEmpty()) {
                 boolean sent = sendViaBrevoApi(toEmail, subject, htmlBody);
                 if (sent) return;
                 System.out.println("⚠ [EmailService] Brevo delivery failed, attempting fallback to SMTP...");
+            } else {
+                System.out.println("⚠ [EmailService] Brevo API Key not active, attempting SMTP directly...");
             }
             sendViaSmtp(toEmail, subject, htmlBody);
         };
