@@ -78,7 +78,7 @@ public class EmailService {
         if (envBrevo == null || envBrevo.trim().isEmpty()) envBrevo = System.getenv("brevo_api_key");
 
         if (envBrevo != null && !envBrevo.trim().isEmpty()) {
-            brevoApiKey = envBrevo.trim();
+            brevoApiKey = envBrevo.replaceAll("\\s+", "");
         }
 
         if (System.getenv("BREVO_SENDER_EMAIL") != null && !System.getenv("BREVO_SENDER_EMAIL").trim().isEmpty()) {
@@ -167,11 +167,13 @@ public class EmailService {
                 + "\"htmlContent\":" + toJsonString(htmlBody)
                 + "}";
 
+            String cleanKey = (brevoApiKey != null) ? brevoApiKey.replaceAll("\\s+", "") : "";
+
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.brevo.com/v3/smtp/email"))
                     .header("accept", "application/json")
-                    .header("api-key", brevoApiKey)
+                    .header("api-key", cleanKey)
                     .header("content-type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(payload, StandardCharsets.UTF_8))
                     .build();
