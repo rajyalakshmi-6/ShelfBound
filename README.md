@@ -3,12 +3,12 @@
 **A full-stack e-commerce bookstore, built from scratch — not from a template brief.**
 
 ![Java](https://img.shields.io/badge/Java-Jakarta%20Servlets%20%7C%20JSP-ED8B00?logo=openjdk&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-9%20Tables-4479A1?logo=mysql&logoColor=white)
+![Aiven MySQL](https://img.shields.io/badge/Aiven%20Cloud-MySQL%208.4%20SSL-4479A1?logo=mysql&logoColor=white)
 ![Tomcat](https://img.shields.io/badge/Server-Apache%20Tomcat%2010-F8DC75?logo=apachetomcat&logoColor=black)
-![Maven](https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven&logoColor=white)
-![Architecture](https://img.shields.io/badge/Architecture-MVC%20%2B%20DAO-blue)
-![Status](https://img.shields.io/badge/Status-Actively%20Developed-brightgreen)
+![Docker](https://img.shields.io/badge/Docker-Multi--Stage-2496ED?logo=docker&logoColor=white)
 ![Deployment](https://img.shields.io/badge/Deployment-Render%20Live-46E3B7?logo=render&logoColor=white)
+![Brevo API](https://img.shields.io/badge/Email-Brevo%20REST%20API-0B99FF?logo=sendinblue&logoColor=white)
+![Architecture](https://img.shields.io/badge/Architecture-MVC%20%2B%20DAO-blue)
 
 ### 🌐 [Explore Live Application](https://shelfbound-bookstore.onrender.com) · 📘 [Production Architecture & Cloud Guide](PRODUCTION_ARCHITECTURE_GUIDE.md) · 🎥 [Watch Demo](https://drive.google.com/file/d/1vZL-sO3S1cf9jhZlN2j7xfH868dBIF3k/view?usp=drivesdk) · 📊 [Presentation](presentation/ShelfBound.pptx)
 
@@ -126,7 +126,7 @@ One servlet per feature (Cart, Wishlist, Order, Admin operations), and per-page 
 
 ## 🗄️ Database Design
 
-MySQL, accessed via JDBC with a fully relational, foreign-key-constrained schema — **9 tables** in total.
+Hosted on **Aiven Cloud Managed MySQL 8.4** over encrypted TLS/SSL (`sslmode=REQUIRED`), accessed via JDBC with a fully relational, foreign-key-constrained schema across **9 normalized tables**.
 
 ---
 
@@ -204,22 +204,37 @@ response.sendRedirect("cart");
 
 ## 🛠️ Technical Stack & Architectural Purpose
 
+### ⚡ Quick-Scan Technology Matrix (At a Glance)
+
+* ☕ **Backend Runtime & Architecture:** Java 21 (LTS) · Jakarta Servlets 6.0 · JSP 3.1 · MVC + DAO Pattern · Apache Tomcat 10.1
+* ☁️ **Cloud Database & Storage:** Aiven Cloud Managed MySQL 8.4 (9 Normalized Tables · Foreign Keys · Mandatory SSL/TLS `sslmode=REQUIRED`)
+* 🐳 **DevOps, Containerization & CI/CD:** Docker (Multi-Stage Build) · Render Cloud Platform · Automated GitHub Webhook Continuous Deployment
+* 📧 **Cloud Email & Communication:** Brevo (Sendinblue) HTTPS REST API (v3) over Port 443 · Native `java.net.http.HttpClient` · Jakarta Mail SMTP Fallback
+* 🔐 **Authentication & Cryptography:** BCrypt (`jbcrypt:0.4`) Salted Hashing (12 Salt Rounds) · 6-Digit Email OTP Verification · Role-Based Access Control · Admin User Blocking
+* 🎨 **Frontend Design System:** HTML5 · CSS3 Smoky Glassmorphism (`backdrop-filter: blur()`) · Fluid Multi-Breakpoint Flexbox & CSS Grid
+* ⚡ **Client-Side Interactivity:** Vanilla JavaScript (ES6+) · AJAX Fetch API (Zero Page Reloads) · Live OTP Countdown Timers · Global Keyboard Shortcuts (`Ctrl+K`)
+* 📦 **Build & Development Tooling:** Apache Maven 3.9 · Eclipse IDE for Enterprise Java · Postman · Git
+
+---
+
+### 🏛️ Detailed Architectural Purpose Matrix
+
 Every technology in ShelfBound was selected deliberately to simulate enterprise-grade full-stack standards:
 
 | Layer / Technology | Version & Tool | Architectural Purpose & Implementation Details |
 | :--- | :--- | :--- |
-| **Programming Language** | **Java 21 (LTS)** | Core enterprise backend language; leverages modern LTS Java features, strong type safety, robust memory management, and modern concurrent execution primitives. |
-| **Web Architecture** | **MVC + DAO Pattern** | Clean separation of concerns: Model (Entities & DTOs), View (JSP with JSTL/EL), Controller (Jakarta Servlets), and Data Access Objects (JDBC DAO contracts + implementations). |
-| **Backend Framework** | **Jakarta Servlets 6.0 & JSP 3.1** | High-throughput HTTP request-response orchestration, session lifecycle management (`HttpSession`), server-side rendering, and granular role-based access control. |
-| **Application Server** | **Apache Tomcat 10.1** | Production-grade Jakarta EE Servlet container hosting the packaged `ROOT.war` on port 8080 with root context routing (`/`). |
-| **Cloud Database** | **MySQL 8.4 (Aiven Cloud)** | Fully managed, highly available relational database with 9 normalized tables, foreign key constraints, UTF-8 unicode encoding, and mandatory TLS/SSL encryption (`sslmode=REQUIRED`). |
-| **Containerization** | **Docker (Multi-Stage)** | Stage 1 (`maven:3.9-eclipse-temurin-21`) compiles source code and builds the production WAR file; Stage 2 (`tomcat:10.1-jdk21-temurin`) provides a lean, secure, immutable runtime container. |
-| **Cloud Hosting & CI/CD** | **Render Cloud Platform** | Production cloud container hosting with automated GitHub continuous deployment (auto-rebuilds on `git push origin main`), zero-downtime rollouts, and automatic TLS/SSL certificates. |
-| **Cloud Email Dispatch** | **Brevo HTTPS REST API (v3)** | High-deliverability transactional email engine running over HTTPS (Port 443) using native `java.net.http.HttpClient` to bypass cloud ISP outbound SMTP port restrictions (25/587); delivers OTP verification, order receipts, and admin replies directly into user inboxes. |
-| **Password Cryptography** | **BCrypt (`jbcrypt:0.4`)** | Adaptive cryptographic one-way hashing with 12 salt rounds (`$2a$12$...`) to protect against rainbow table and brute-force attacks; includes seamless zero-downtime auto-migration from plain-text legacy passwords. |
-| **Build & Dependency Tool**| **Apache Maven 3.9** | Declarative dependency management (`pom.xml`), automated multi-stage compilation, reproducible packaging, and target WAR generation. |
-| **Frontend & UI Styling** | **HTML5 & CSS3 Glassmorphism** | Custom dark smoky glassmorphism design system featuring ambient radial gradients, frosted-glass backdrop filters (`backdrop-filter: blur()`), CSS custom properties, and multi-breakpoint responsive grids. |
-| **Client-Side Interactivity** | **JavaScript (ES6+) & Fetch API** | Zero-dependency vanilla JavaScript enabling AJAX-driven cart actions, dynamic offer modals, real-time OTP countdown timers, and keyboard shortcuts (`Ctrl+K` search). |
+| **Programming Language** | **☕ Java 21 (LTS)** | Core enterprise backend language; leverages modern LTS Java features, strong type safety, robust memory management, and modern concurrent execution primitives. |
+| **Web Architecture** | **🏛️ MVC + DAO Pattern** | Clean separation of concerns: Model (Entities & DTOs), View (JSP with JSTL/EL), Controller (Jakarta Servlets), and Data Access Objects (JDBC DAO contracts + implementations). |
+| **Backend Framework** | **⚡ Jakarta Servlets 6.0 & JSP 3.1** | High-throughput HTTP request-response orchestration, session lifecycle management (`HttpSession`), server-side rendering, and granular role-based access control. |
+| **Application Server** | **🐱 Apache Tomcat 10.1** | Production-grade Jakarta EE Servlet container hosting the packaged `ROOT.war` on port 8080 with root context routing (`/`). |
+| **Cloud Database** | **☁️ Aiven Cloud MySQL 8.4** | Fully managed, highly available cloud relational database with 9 normalized tables, foreign key constraints, UTF-8 unicode encoding, and mandatory TLS/SSL encryption (`sslmode=REQUIRED`). |
+| **Containerization** | **🐳 Docker (Multi-Stage)** | Stage 1 (`maven:3.9-eclipse-temurin-21`) compiles source code and builds the production WAR file; Stage 2 (`tomcat:10.1-jdk21-temurin`) provides a lean, secure, immutable runtime container. |
+| **Cloud Hosting & CI/CD** | **🚀 Render Cloud Platform** | Production cloud container hosting with automated GitHub continuous deployment (auto-rebuilds on `git push origin main`), zero-downtime rollouts, and automatic TLS/SSL certificates. |
+| **Cloud Email Dispatch** | **📧 Brevo HTTPS REST API (v3)** | High-deliverability transactional email engine running over HTTPS (Port 443) using native `java.net.http.HttpClient` to bypass cloud ISP outbound SMTP port restrictions (25/587); delivers OTP verification, order receipts, and admin replies directly into user inboxes. |
+| **Password Cryptography** | **🔐 BCrypt (`jbcrypt:0.4`)** | Adaptive cryptographic one-way hashing with 12 salt rounds (`$2a$12$...`) to protect against rainbow table and brute-force attacks; includes seamless zero-downtime auto-migration from plain-text legacy passwords. |
+| **Build & Dependency Tool**| **📦 Apache Maven 3.9** | Declarative dependency management (`pom.xml`), automated multi-stage compilation, reproducible packaging, and target WAR generation. |
+| **Frontend & UI Styling** | **🎨 HTML5 & CSS3 Glassmorphism** | Custom dark smoky glassmorphism design system featuring ambient radial gradients, frosted-glass backdrop filters (`backdrop-filter: blur()`), CSS custom properties, and multi-breakpoint responsive grids. |
+| **Client-Side Interactivity** | **⚡ JavaScript (ES6+) & Fetch API** | Zero-dependency vanilla JavaScript enabling AJAX-driven cart actions, dynamic offer modals, real-time OTP countdown timers, and keyboard shortcuts (`Ctrl+K` search). |
 
 
 ---
