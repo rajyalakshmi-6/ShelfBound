@@ -266,6 +266,38 @@ body::after {
     color: var(--accent-orange);
 }
 
+.password-input-wrapper input {
+    padding-right: 42px;
+}
+
+.password-toggle-btn {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    border-radius: 6px;
+    transition: color 0.2s ease, background 0.2s ease;
+    z-index: 2;
+}
+
+.password-toggle-btn:hover {
+    color: var(--accent-orange);
+    background: rgba(255, 122, 0, 0.12);
+}
+
+.password-toggle-btn:focus {
+    outline: none;
+    color: var(--accent-orange);
+}
+
 /* ================= LOGIN BUTTON ================= */
 .login-card button[type="submit"] {
     margin-top: 22px; 
